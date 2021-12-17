@@ -35,9 +35,8 @@ SELECT "STATE_NAME",
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
   
-  create table;
-  alter table
-  --alter
+  able
+  --  alter
   */
 
 UNION ALL
@@ -86,12 +85,10 @@ SELECT "STATE_NAME",
  
 UNION ALL
 
-alter
---
-alter
+
 --create
 --
-create
+
 SELECT "STATE_NAME",replace
 
        null "PROJECT_TASK_ID",
@@ -196,8 +193,8 @@ SELECT "STATE_NAME",
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
   
-  create table;
-  alter table
+ -- create table;
+--  alter table
   --alter
   */
 
@@ -247,12 +244,10 @@ SELECT "STATE_NAME",
  
 UNION ALL
 
-alter
+
+-- create
 --
-alter
---create
---
-create
+
 SELECT "STATE_NAME",replace
 
        null "PROJECT_TASK_ID",
@@ -357,8 +352,7 @@ SELECT "STATE_NAME",
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
   
-  create table;
-  alter table
+
   --alter
   */
 
@@ -408,12 +402,9 @@ SELECT "STATE_NAME",
  
 UNION ALL
 
-alter
---
-alter
+
 --create
---
-create
+
 SELECT "STATE_NAME",replace
 
        null "PROJECT_TASK_ID",
@@ -518,9 +509,7 @@ SELECT "STATE_NAME",
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
   
-  create table;
-  alter table
-  --alter
+
   */
 
 UNION ALL
@@ -569,12 +558,6 @@ SELECT "STATE_NAME",
  
 UNION ALL
 
-alter
---
-alter
---create
---
-create
 SELECT "STATE_NAME",replace
 
        null "PROJECT_TASK_ID",
@@ -679,10 +662,7 @@ SELECT "STATE_NAME",
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
   
-  create table;
-  alter table
-  --alter
-  */
+ 
 
 UNION ALL
 SELECT "STATE_NAME",
@@ -730,12 +710,6 @@ SELECT "STATE_NAME",
  
 UNION ALL
 
-alter
---
-alter
---create
---
-create
 SELECT "STATE_NAME",replace
 
        null "PROJECT_TASK_ID",
@@ -839,11 +813,7 @@ SELECT "STATE_NAME",
    and t_gps_workflow_states.state_id = t_gps_state_operations.from_state_id
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
-  
-  create table;
-  alter table
-  --alter
-  */
+
 
 UNION ALL
 SELECT "STATE_NAME",
@@ -889,14 +859,7 @@ SELECT "STATE_NAME",
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
  
-UNION ALL
 
-alter
---
-alter
---create
---
-create
 SELECT "STATE_NAME",replace
 
        null "PROJECT_TASK_ID",
@@ -985,11 +948,7 @@ SELECT "STATE_NAME",replace
    and t_migration_requests.migration_request_number = 'TCC/ISOE/20022' --1512
  ORDER BY start_date, STATE_ORDER, FINISH_DATE;
 
- 
-  create table;
-  alter table
-  --alter
-  */
+
 
 UNION ALL
 SELECT "STATE_NAME",
@@ -1037,12 +996,7 @@ SELECT "STATE_NAME",
  
 UNION ALL
 
-alter
---
-alter
---create
---
-create
+
 SELECT "STATE_NAME",replace
 
        null "PROJECT_TASK_ID",
@@ -1149,10 +1103,6 @@ SELECT "STATE_NAME",replace
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
   
-  create table;
-  alter table
-  --alter
-  */
 
 UNION ALL
 SELECT "STATE_NAME",
