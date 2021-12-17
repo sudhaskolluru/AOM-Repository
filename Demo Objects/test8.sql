@@ -41,13 +41,13 @@ SELECT "STATE_NAME",
    and t_gps_state_operations.operation_id = t_gps_operation_to_states.operation_id  
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
   
-  create table;
-  alter table
+   table;
+   table
   --alter
   */
   altered
 created
-replace
+
 replaced
 UNION ALL
 SELECT "STATE_NAME",
@@ -95,15 +95,12 @@ SELECT "STATE_NAME",
  
 UNION ALL
 
-alter
---
-alter
 --create
 --
-create
-SELECT "STATE_NAME",replace
+
+SELECT "STATE_NAME",
 --replace
-create
+
 
        null "PROJECT_TASK_ID",
        STATE_NAME "ACTUAL_STATE_NAME",
