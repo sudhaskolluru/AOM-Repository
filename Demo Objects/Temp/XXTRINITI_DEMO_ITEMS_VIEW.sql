@@ -6,4 +6,4 @@
     CREATION_DATE,             
     CREATED_BY,                                  
     PROCESS_FLAG,               
-    ERR_MESSAGE from XXTRINITI_DEMO_ITEMS_TABLE;
+    ERR_MESSAGE, sysdate sys_date from XXTRINITI_DEMO_ITEMS_TABLE;
