@@ -1,0 +1,192 @@
+# $Header$
+
+# dbdrv: exec fnd bin FNDLOAD bin &phase=daa+64 checkfile:~PROD:~PATH:~FILE &ui_apps 0 Y UPLOAD @FND:patch/115/import/afcprset.lct @~PROD:~PATH/~FILE
+LANGUAGE = "US"
+LDRCONFIG = "afcprset.lct 120.3.12020000.2"
+
+#Source Database TPIDEV
+
+#RELEASE_NAME 12.2.10
+
+# -- Begin Entity Definitions -- 
+
+DEFINE REQ_SET
+  KEY   APPLICATION_SHORT_NAME          VARCHAR2(50)
+  KEY   REQUEST_SET_NAME                VARCHAR2(30)
+  CTX   OWNER                           VARCHAR2(4000)
+  BASE  ALLOW_CONSTRAINTS_FLAG          VARCHAR2(1)
+  BASE  PRINT_TOGETHER_FLAG             VARCHAR2(1)
+  BASE  START_DATE_ACTIVE               VARCHAR2(11)
+  BASE  START_STAGE_NAME                VARCHAR2(30)
+  BASE  END_DATE_ACTIVE                 VARCHAR2(11)
+  BASE  CONCURRENT_PROGRAM_NAME         VARCHAR2(30)
+  BASE  OWNER_USER_NAME                 VARCHAR2(100)
+  BASE  PRINTER                         VARCHAR2(30)
+  BASE  PRINT_STYLE                     VARCHAR2(30)
+  BASE  RECALC_PARAMETERS               VARCHAR2(1)
+  TRANS USER_REQUEST_SET_NAME           VARCHAR2(240)
+  TRANS DESCRIPTION                     VARCHAR2(240)
+  BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+
+  DEFINE STAGE
+    KEY   STAGE_NAME                      VARCHAR2(30)
+    CTX   OWNER                           VARCHAR2(4000)
+    BASE  CRITICAL                        VARCHAR2(1)
+    BASE  OUTCOME                         VARCHAR2(1)
+    BASE  ALLOW_CONSTRAINTS_FLAG          VARCHAR2(1)
+    BASE  DISPLAY_SEQUENCE                VARCHAR2(50)
+    BASE  FUNCTION_APPLICATION            VARCHAR2(50)
+    BASE  FUNCTION                        VARCHAR2(30)
+    BASE  SUCCESS_LINK                    VARCHAR2(30)
+    BASE  WARNING_LINK                    VARCHAR2(30)
+    BASE  ERROR_LINK                      VARCHAR2(30)
+    BASE  CONCURRENT_PROGRAM_NAME         VARCHAR2(30)
+    TRANS USER_STAGE_NAME                 VARCHAR2(240)
+    TRANS DESCRIPTION                     VARCHAR2(240)
+    BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+
+    DEFINE STAGE_PROG
+      KEY   SEQUENCE                        VARCHAR2(50)
+      CTX   OWNER                           VARCHAR2(4000)
+      BASE  PROGRAM_APPLICATION             VARCHAR2(50)
+      BASE  PROGRAM_NAME                    VARCHAR2(30)
+      BASE  NLS_LANGUAGE                    VARCHAR2(30)
+      BASE  NLS_TERRITORY                   VARCHAR2(30)
+      BASE  CRITICAL                        VARCHAR2(1)
+      BASE  NUMBER_OF_COPIES                VARCHAR2(50)
+      BASE  PRINTER                         VARCHAR2(30)
+      BASE  PRINT_STYLE                     VARCHAR2(30)
+      BASE  SAVE_OUTPUT_FLAG                VARCHAR2(1)
+      BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+
+      DEFINE PROG_ARGS
+        KEY   DESC_FLEX_APPL                  VARCHAR2(50)
+        KEY   DESC_FLEX_NAME                  VARCHAR2(50)
+        KEY   COL_NAME                        VARCHAR2(30)
+        CTX   OWNER                           VARCHAR2(4000)
+        BASE  DISPLAY_FLAG                    VARCHAR2(1)
+        BASE  INSERT_FLAG                     VARCHAR2(1)
+        BASE  UPDATE_FLAG                     VARCHAR2(1)
+        BASE  DEFAULT_TYPE                    VARCHAR2(1)
+        BASE  DEFAULT_VALUE                   VARCHAR2(2000)
+        BASE  SHARED_PARAMETER_NAME           VARCHAR2(30)
+        BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+      END PROG_ARGS
+    END STAGE_PROG
+  END STAGE
+END REQ_SET
+
+# -- End Entity Definitions -- 
+
+
+BEGIN REQ_SET "XXTPI" "FNDRSSUB841"
+  OWNER = "TKHAN"
+  ALLOW_CONSTRAINTS_FLAG = "N"
+  PRINT_TOGETHER_FLAG = "N"
+  START_DATE_ACTIVE = "2012/10/10"
+  START_STAGE_NAME = "STAGE10"
+  OWNER_USER_NAME = "TKHAN"
+  USER_REQUEST_SET_NAME = "TK GL D/R Load Req Set"
+  DESCRIPTION = "TPI TK GL Daily Rates Load"
+  LAST_UPDATE_DATE = "2012/10/11"
+
+  BEGIN STAGE "STAGE10"
+    OWNER = "TKHAN"
+    CRITICAL = "N"
+    OUTCOME = "C"
+    ALLOW_CONSTRAINTS_FLAG = "N"
+    DISPLAY_SEQUENCE = "10"
+    FUNCTION_APPLICATION = "FND"
+    FUNCTION = "FNDRSSTE"
+    SUCCESS_LINK = "STAGE20"
+    WARNING_LINK = "STAGE20"
+    USER_STAGE_NAME = "TPI TK GL Daily Rates Extract Prog (10)"
+    LAST_UPDATE_DATE = "2012/10/10"
+  
+    BEGIN STAGE_PROG "10"
+      OWNER = "TKHAN"
+      PROGRAM_APPLICATION = "XXTPI"
+      PROGRAM_NAME = "TK_GL_DAILY_RATES_SH_EXT"
+      CRITICAL = "Y"
+      SAVE_OUTPUT_FLAG = "Y"
+      LAST_UPDATE_DATE = "2012/10/10"
+    
+    END STAGE_PROG
+    
+  END STAGE
+  
+  BEGIN STAGE "STAGE20"
+    OWNER = "TKHAN"
+    CRITICAL = "N"
+    OUTCOME = "C"
+    ALLOW_CONSTRAINTS_FLAG = "N"
+    DISPLAY_SEQUENCE = "20"
+    FUNCTION_APPLICATION = "FND"
+    FUNCTION = "FNDRSSTE"
+    SUCCESS_LINK = "STAGE30"
+    WARNING_LINK = "STAGE30"
+    USER_STAGE_NAME = "TPI TK GL Daily Rates Stg Data Load Prog (20)"
+    LAST_UPDATE_DATE = "2012/10/10"
+  
+    BEGIN STAGE_PROG "10"
+      OWNER = "TKHAN"
+      PROGRAM_APPLICATION = "XXTPI"
+      PROGRAM_NAME = "TPI_TK_GL_DAILY_RATES_PROG"
+      CRITICAL = "Y"
+      SAVE_OUTPUT_FLAG = "Y"
+      LAST_UPDATE_DATE = "2012/10/10"
+    
+    END STAGE_PROG
+    
+  END STAGE
+  
+  BEGIN STAGE "STAGE30"
+    OWNER = "TKHAN"
+    CRITICAL = "N"
+    OUTCOME = "C"
+    ALLOW_CONSTRAINTS_FLAG = "N"
+    DISPLAY_SEQUENCE = "30"
+    FUNCTION_APPLICATION = "FND"
+    FUNCTION = "FNDRSSTE"
+    SUCCESS_LINK = "STAGE40"
+    WARNING_LINK = "STAGE40"
+    USER_STAGE_NAME = "TPI TK GL Daily Rates Interface Load Prog (30)"
+    LAST_UPDATE_DATE = "2012/10/10"
+  
+    BEGIN STAGE_PROG "10"
+      OWNER = "TKHAN"
+      PROGRAM_APPLICATION = "XXTPI"
+      PROGRAM_NAME = "TPI_TK_GL_DAILY_VALID_PKG"
+      CRITICAL = "Y"
+      SAVE_OUTPUT_FLAG = "Y"
+      LAST_UPDATE_DATE = "2012/10/10"
+    
+    END STAGE_PROG
+    
+  END STAGE
+  
+  BEGIN STAGE "STAGE40"
+    OWNER = "TKHAN"
+    CRITICAL = "N"
+    OUTCOME = "C"
+    ALLOW_CONSTRAINTS_FLAG = "N"
+    DISPLAY_SEQUENCE = "40"
+    FUNCTION_APPLICATION = "FND"
+    FUNCTION = "FNDRSSTE"
+    USER_STAGE_NAME = "Program - Daily Rates Import and Calculation (40)"
+    LAST_UPDATE_DATE = "2012/10/10"
+  
+    BEGIN STAGE_PROG "10"
+      OWNER = "TKHAN"
+      PROGRAM_APPLICATION = "SQLGL"
+      PROGRAM_NAME = "GLDRICCP"
+      CRITICAL = "Y"
+      SAVE_OUTPUT_FLAG = "Y"
+      LAST_UPDATE_DATE = "2012/10/10"
+    
+    END STAGE_PROG
+    
+  END STAGE
+  
+END REQ_SET
+
