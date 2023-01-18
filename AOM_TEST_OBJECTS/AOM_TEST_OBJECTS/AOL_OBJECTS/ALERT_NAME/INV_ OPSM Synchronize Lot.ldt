@@ -1,0 +1,1185 @@
+# $Header$
+
+# dbdrv: exec fnd bin FNDLOAD bin &phase=daa+52 checkfile:~PROD:~PATH:~FILE &ui_apps 0 Y UPLOAD @ALR:patch/115/import/alr.lct @~PROD:~PATH/~FILE
+LANGUAGE = "US"
+LDRCONFIG = "alr.lct"
+
+#Source Database TPIDEV
+
+#RELEASE_NAME 12.2.10
+
+# -- Begin Entity Definitions -- 
+
+DEFINE ALR_ALERTS
+  KEY   APPLICATION_SHORT_NAME          VARCHAR2(50)
+  KEY   ALERT_NAME                      VARCHAR2(50)
+  CTX   OWNER                           VARCHAR2(4000)
+  BASE  ALERT_CONDITION_TYPE            VARCHAR2(1)
+  BASE  ENABLED_FLAG                    VARCHAR2(1)
+  BASE  START_DATE_ACTIVE               VARCHAR2(25)
+  BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+  BASE  TABLE_APPLICATION_SHORT_NAME    VARCHAR2(50)
+  BASE  DESCRIPTION                     VARCHAR2(240)
+  BASE  FREQUENCY_TYPE                  VARCHAR2(1)
+  BASE  WEEKLY_CHECK_DAY                VARCHAR2(3)
+  BASE  MONTHLY_CHECK_DAY_NUM           VARCHAR2(50)
+  BASE  DAYS_BETWEEN_CHECKS             VARCHAR2(50)
+  BASE  CHECK_BEGIN_DATE                VARCHAR2(25)
+  BASE  DATE_LAST_CHECKED               VARCHAR2(25)
+  BASE  INSERT_FLAG                     VARCHAR2(1)
+  BASE  UPDATE_FLAG                     VARCHAR2(1)
+  BASE  DELETE_FLAG                     VARCHAR2(1)
+  BASE  MAINTAIN_HISTORY_DAYS           VARCHAR2(50)
+  BASE  CHECK_TIME                      VARCHAR2(50)
+  BASE  CHECK_START_TIME                VARCHAR2(50)
+  BASE  CHECK_END_TIME                  VARCHAR2(50)
+  BASE  SECONDS_BETWEEN_CHECKS          VARCHAR2(50)
+  BASE  CHECK_ONCE_DAILY_FLAG           VARCHAR2(1)
+  BASE  SQL_STATEMENT_TEXT              VARCHAR2(32767)
+  BASE  ONE_TIME_ONLY_FLAG              VARCHAR2(50)
+  BASE  TABLE_NAME                      VARCHAR2(31)
+  BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+
+  DEFINE ALR_RESPONSE_SETS
+    KEY   RESP_SET_NAME                   VARCHAR2(30)
+    CTX   OWNER                           VARCHAR2(4000)
+    BASE  DESCRIPTION                     VARCHAR2(240)
+    BASE  ENABLED_FLAG                    VARCHAR2(1)
+    BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+    BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+
+    DEFINE ALR_RESPONSE_VARIABLES
+      KEY   RESP_VAR_NAME                   VARCHAR2(30)
+      CTX   OWNER                           VARCHAR2(4000)
+      BASE  DESCRIPTION                     VARCHAR2(240)
+      BASE  TYPE                            VARCHAR2(1)
+      BASE  DEFAULT_VALUE                   VARCHAR2(240)
+      BASE  DATA_TYPE                       VARCHAR2(1)
+      BASE  DETAIL_MAX_LEN                  VARCHAR2(50)
+      BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+    END ALR_RESPONSE_VARIABLES
+
+      DEFINE ALR_RESPONSE_ACTIONS
+        KEY   RESPONSE_NAME                   VARCHAR2(240)
+        KEY   SEQUENCE                        VARCHAR2(50)
+        CTX   OWNER                           VARCHAR2(4000)
+        BASE  ACTION_NAME                     VARCHAR2(80)
+        BASE  ENABLED_FLAG                    VARCHAR2(1)
+        BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+        BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+      END ALR_RESPONSE_ACTIONS
+
+        DEFINE ALR_VALID_RESPONSES
+          KEY   RESPONSE_NAME                   VARCHAR2(240)
+          CTX   OWNER                           VARCHAR2(4000)
+          BASE  TYPE                            VARCHAR2(1)
+          BASE  RESPONSE_TEXT                   VARCHAR2(32000)
+          BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+        END ALR_VALID_RESPONSES
+  END ALR_RESPONSE_SETS
+
+    DEFINE ALR_ACTION_SETS
+      KEY   NAME                            VARCHAR2(50)
+      CTX   OWNER                           VARCHAR2(4000)
+      BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+      BASE  ENABLED_FLAG                    VARCHAR2(1)
+      BASE  RECIPIENTS_VIEW_ONLY_FLAG       VARCHAR2(1)
+      BASE  DESCRIPTION                     VARCHAR2(240)
+      BASE  SUPPRESS_FLAG                   VARCHAR2(1)
+      BASE  SUPPRESS_DAYS                   VARCHAR2(50)
+      BASE  SEQUENCE                        VARCHAR2(50)
+      BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+
+      DEFINE ALR_ACTION_SET_MEMBERS
+        CTX   OWNER                           VARCHAR2(4000)
+        BASE  ACTION_NAME                     VARCHAR2(80)
+        BASE  GROUP_NAME                      VARCHAR2(80)
+        BASE  GROUP_TYPE                      VARCHAR2(1)
+        BASE  SEQUENCE                        VARCHAR2(50)
+        BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+        BASE  ENABLED_FLAG                    VARCHAR2(1)
+        BASE  SUMMARY_THRESHOLD               VARCHAR2(50)
+        BASE  ABORT_FLAG                      VARCHAR2(1)
+        BASE  ERROR_ACTION_SEQUENCE           VARCHAR2(50)
+        BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+      END ALR_ACTION_SET_MEMBERS
+
+        DEFINE ALR_ACTION_SET_OUTPUTS
+          KEY   ACTION_SET_OUTPUT_NAME          VARCHAR2(30)
+          CTX   OWNER                           VARCHAR2(4000)
+          BASE  SEQUENCE                        VARCHAR2(50)
+          BASE  SUPPRESS_FLAG                   VARCHAR2(1)
+          BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+        END ALR_ACTION_SET_OUTPUTS
+
+          DEFINE ALR_ACTION_SET_INPUTS
+            KEY   ACTION_SET_INPUT_NAME           VARCHAR2(30)
+            CTX   OWNER                           VARCHAR2(4000)
+            BASE  VALUE                           VARCHAR2(240)
+            BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+          END ALR_ACTION_SET_INPUTS
+    END ALR_ACTION_SETS
+
+      DEFINE ALR_ACTION_GROUPS
+        KEY   NAME                            VARCHAR2(80)
+        KEY   GROUP_TYPE                      VARCHAR2(1)
+        CTX   OWNER                           VARCHAR2(4000)
+        BASE  ACTION_GROUP_TYPE               VARCHAR2(1)
+        BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+        BASE  ENABLED_FLAG                    VARCHAR2(1)
+        BASE  DESCRIPTION                     VARCHAR2(240)
+        BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+
+        DEFINE ALR_ACTION_GROUP_MEMBERS
+          CTX   OWNER                           VARCHAR2(4000)
+          BASE  ACTION_NAME                     VARCHAR2(80)
+          BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+          BASE  ENABLED_FLAG                    VARCHAR2(1)
+          BASE  ACTION_LEVEL                    VARCHAR2(50)
+          BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+        END ALR_ACTION_GROUP_MEMBERS
+      END ALR_ACTION_GROUPS
+
+        DEFINE ALR_ACTIONS
+          KEY   ACTION_NAME                     VARCHAR2(80)
+          KEY   ACTION_END_DATE_ACTIVE          VARCHAR2(25)
+          CTX   OWNER                           VARCHAR2(4000)
+          BASE  ACTION_TYPE                     VARCHAR2(1)
+          BASE  ENABLED_FLAG                    VARCHAR2(1)
+          BASE  DESCRIPTION                     VARCHAR2(240)
+          BASE  ACTION_LEVEL_TYPE               VARCHAR2(1)
+          BASE  DATE_LAST_EXECUTED              VARCHAR2(25)
+          BASE  FILE_NAME                       VARCHAR2(240)
+          BASE  ARGUMENT_STRING                 VARCHAR2(240)
+          BASE  PROGRAM_APPLICATION_NAME        VARCHAR2(50)
+          BASE  CONCURRENT_PROGRAM_NAME         VARCHAR2(30)
+          BASE  LIST_APPLICATION_NAME           VARCHAR2(50)
+          BASE  LIST_NAME                       VARCHAR2(30)
+          BASE  TO_RECIPIENTS                   VARCHAR2(240)
+          BASE  CC_RECIPIENTS                   VARCHAR2(240)
+          BASE  BCC_RECIPIENTS                  VARCHAR2(240)
+          BASE  PRINT_RECIPIENTS                VARCHAR2(240)
+          BASE  PRINTER                         VARCHAR2(30)
+          BASE  SUBJECT                         VARCHAR2(240)
+          BASE  REPLY_TO                        VARCHAR2(240)
+          BASE  RESPONSE_SET_NAME               VARCHAR2(30)
+          BASE  FOLLOW_UP_AFTER_DAYS            VARCHAR2(50)
+          BASE  COLUMN_WRAP_FLAG                VARCHAR2(1)
+          BASE  MAXIMUM_SUMMARY_MESSAGE_WIDTH   VARCHAR2(50)
+          BASE  BODY                            VARCHAR2(2000)
+          BASE  VERSION_NUMBER                  VARCHAR2(50)
+          BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+
+          DEFINE ALR_ACTION_OUTPUTS
+            KEY   ACTION_OUT_NAME                 VARCHAR2(30)
+            CTX   OWNER                           VARCHAR2(4000)
+            BASE  CRITICAL_FLAG                   VARCHAR2(1)
+            BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+            BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+          END ALR_ACTION_OUTPUTS
+        END ALR_ACTIONS
+
+          DEFINE ALR_ALERT_OUTPUTS
+            KEY   NAME                            VARCHAR2(30)
+            CTX   OWNER                           VARCHAR2(4000)
+            BASE  SEQUENCE                        VARCHAR2(50)
+            BASE  ENABLED_FLAG                    VARCHAR2(1)
+            BASE  START_DATE_ACTIVE               VARCHAR2(25)
+            BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+            BASE  TITLE                           VARCHAR2(240)
+            BASE  DETAIL_MAX_LEN                  VARCHAR2(50)
+            BASE  SUMMARY_MAX_LEN                 VARCHAR2(50)
+            BASE  DEFAULT_SUPPRESS_FLAG           VARCHAR2(1)
+            BASE  FORMAT_MASK                     VARCHAR2(30)
+            BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+          END ALR_ALERT_OUTPUTS
+
+            DEFINE ALR_ALERT_INSTALLATIONS
+              KEY   ORACLE_USERNAME                 VARCHAR2(30)
+              KEY   DATA_GROUP_NAME                 VARCHAR2(240)
+              CTX   OWNER                           VARCHAR2(4000)
+              BASE  ENABLED_FLAG                    VARCHAR2(1)
+              BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+            END ALR_ALERT_INSTALLATIONS
+
+              DEFINE ALR_ALERT_INPUTS
+                KEY   NAME                            VARCHAR2(30)
+                CTX   OWNER                           VARCHAR2(4000)
+                BASE  ENABLED_FLAG                    VARCHAR2(1)
+                BASE  START_DATE_ACTIVE               VARCHAR2(25)
+                BASE  END_DATE_ACTIVE                 VARCHAR2(25)
+                BASE  TITLE                           VARCHAR2(240)
+                BASE  DATA_TYPE                       VARCHAR2(1)
+                BASE  DEFAULT_VALUE                   VARCHAR2(240)
+                BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+              END ALR_ALERT_INPUTS
+END ALR_ALERTS
+
+# -- End Entity Definitions -- 
+
+
+BEGIN ALR_ALERTS "INV" "INV: OPSM Synchronize Lot"
+  OWNER = "ORACLE12.2.10"
+  ALERT_CONDITION_TYPE = "E"
+  ENABLED_FLAG = "Y"
+  START_DATE_ACTIVE = "2011/01/24 00:00:00"
+  TABLE_APPLICATION_SHORT_NAME = "INV"
+  FREQUENCY_TYPE = "O"
+  INSERT_FLAG = "Y"
+  UPDATE_FLAG = "Y"
+  MAINTAIN_HISTORY_DAYS = "0"
+  SQL_STATEMENT_TEXT =
+ "SELECT\n\
+             msibk.inventory_item_id\n\
+            ,replace(msibk.concatenated_segments,CHR(38),'^^^^')\n\
+            ,replace(msibk.description,CHR(38),'^^^^')\n\
+            ,msibk.primary_uom_code\n\
+            ,msibk.lot_control_code\n\
+            ,msibk.serial_number_control_code\n\
+            ,1\n\
+            ,msibk.organization_id\n\
+            ,mp.organization_code\n\
+            ,mln.age\n\
+            ,to_char(mln.best_by_date,'DD-MM-YYYY HH24:MI:SS')\n\
+            ,to_char(mln.change_date,'DD-MM-YYYY HH24:MI:SS')  \n\
+            ,to_char(mln.expiration_date,'DD-MM-YYYY HH24:MI:SS')\n\
+            ,replace(mln.grade_code,CHR(38),'^^^^')\n\
+            ,mln.length\n\
+            ,mln.length_uom\n\
+            ,replace(mln.description,CHR(38),'^^^^')\n\
+            ,replace(mln.lot_number,CHR(38),'^^^^')\n\
+            ,to_char(mln.maturity_date,'DD-MM-YYYY HH24:MI:SS')\n\
+            ,to_char(mln.origination_date,'DD-MM-YYYY HH24:MI:SS')\n\
+            ,replace(mln.place_of_origin,CHR(38),'^^^^')\n\
+            ,mln.recycled_content\n\
+            ,to_char(mln.retest_date,'DD-MM-YYYY HH24:MI:SS')\n\
+            ,mln.thickness\n\
+            ,mln.thickness_uom\n\
+            ,mln.volume\n\
+            ,mln.volume_uom\n\
+            ,mln.width\n\
+            ,mln.width_uom\n\
+            ,replace(mln.expiration_action_code,CHR(38),'^^^^')\n\
+            ,to_char(mln.expiration_action_date,'DD-MM-YYYY HH24:MI:SS')\n\
+            ,replace(mln.parent_lot_number,CHR(38),'^^^^')\n\
+            ,mln.reservable_type\n\
+            ,mln.origination_type\n\
+            ,mln.gen_object_id\n\
+INTO \n\
+             &inventory_item_id\n\
+            ,&concatenated_segments\n\
+            ,&item_description\n\
+            ,&primary_uom_code\n\
+            ,&lot_control_code\n\
+            ,&serial_number_control_code\n\
+            ,&cross_reference\n\
+            ,&organization_id\n\
+            ,&organization_code\n\
+            ,&age\n\
+            ,&best_by_date\n\
+            ,&change_date\n\
+            ,&expiration_date\n\
+            ,&grade_code\n\
+            ,&length\n\
+            ,&length_uom\n\
+            ,&lot_description\n\
+            ,&lot_number\n\
+            ,&maturity_date\n\
+            ,&origination_date\n\
+            ,&place_of_origin\n\
+            ,&recycled_content\n\
+            ,&retest_date\n\
+            ,&thickness\n\
+            ,&thickness_uom\n\
+            ,&volume\n\
+            ,&volume_uom\n\
+            ,&width\n\
+            ,&width_uom\n\
+            ,&expiration_action_code\n\
+            ,&expiration_action_date\n\
+            ,&parent_lot_number\n\
+            ,&reservable_type\n\
+            ,&origination_type\n\
+            ,&gen_object_id\n\
+FROM         mtl_lot_numbers mln\n\
+            ,mtl_system_items_b_kfv msibk\n\
+            ,mtl_cross_references_vl mcr\n\
+            ,mtl_parameters mp\n\
+       WHERE     msibk.inventory_item_id           =   mcr.inventory_item_id\n\
+         AND     mln.inventory_item_id             =   msibk.inventory_item_id\n\
+         AND     mln.organization_id               =   msibk.organization_id\n\
+         AND     mp.organization_id                =   msibk.organization_id\n\
+         AND     mcr.cross_reference_type          =   'OPSM INTEGRATED'\n\
+         AND     mcr.cross_reference               =   'YES'\n\
+         AND     mp.master_organization_id         =   mcr.organization_id\n\
+         AND     mp.opsm_enabled_FLAG              =   'Y'\n\
+         AND     msibk.lot_control_code            =   2\n\
+         AND     NOT EXISTS\n\
+                            (SELECT 'Y'\n\
+                               FROM MTL_CROSS_REFERENCES_VL\n\
+                              WHERE CROSS_REFERENCE_TYPE      = 'OPSM INTEGRATED'\n\
+                                AND ORGANIZATION_ID           = msibk.organization_id\n\
+                                AND INVENTORY_ITEM_ID         = msibk.inventory_item_id\n\
+                                AND UPPER(CROSS_REFERENCE)    = 'NO')\n\
+        AND      mln.ROWID = :ROWID;"
+  TABLE_NAME = "MTL_LOT_NUMBERS"
+  LAST_UPDATE_DATE = "2011/01/24"
+
+
+  BEGIN ALR_ALERT_INSTALLATIONS "APPS" ""
+    OWNER = "ORACLE12.2.10"
+    ENABLED_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_INSTALLATIONS
+  
+
+  BEGIN ALR_ALERT_OUTPUTS "AGE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "10"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "AGE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "BEST_BY_DATE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "11"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "BEST_BY_DATE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "CHANGE_DATE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "12"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "CHANGE_DATE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "CONCATENATED_SEGMENTS"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "2"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "CONCATENATED_SEGMENTS"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "CROSS_REFERENCE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "7"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "CROSS_REFERENCE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "EXPIRATION_ACTION_CODE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "30"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "EXPIRATION_ACTION_CODE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "EXPIRATION_ACTION_DATE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "31"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "EXPIRATION_ACTION_DATE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "EXPIRATION_DATE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "13"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "EXPIRATION_DATE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "GEN_OBJECT_ID"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "35"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "GEN_OBJECT_ID"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "GRADE_CODE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "14"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "GRADE_CODE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "INVENTORY_ITEM_ID"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "1"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "INVENTORY_ITEM_ID"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "ITEM_DESCRIPTION"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "3"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "ITEM_DESCRIPTION"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "LENGTH"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "15"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "LENGTH"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "LENGTH_UOM"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "16"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "LENGTH_UOM"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "LOT_CONTROL_CODE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "5"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "LOT_CONTROL_CODE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "LOT_DESCRIPTION"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "17"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "LOT_DESCRIPTION"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "LOT_NUMBER"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "18"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "LOT_NUMBER"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "MATURITY_DATE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "19"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "MATURITY_DATE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "ORGANIZATION_CODE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "9"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "ORGANIZATION_CODE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "ORGANIZATION_ID"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "8"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "ORGANIZATION_ID"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "ORIGINATION_DATE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "20"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "ORIGINATION_DATE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "ORIGINATION_TYPE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "34"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "ORIGINATION_TYPE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "PARENT_LOT_NUMBER"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "32"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "PARENT_LOT_NUMBER"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "PLACE_OF_ORIGIN"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "21"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "PLACE_OF_ORIGIN"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "PRIMARY_UOM_CODE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "4"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "PRIMARY_UOM_CODE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "RECYCLED_CONTENT"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "22"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "RECYCLED_CONTENT"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "RESERVABLE_TYPE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "33"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "RESERVABLE_TYPE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "RETEST_DATE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "23"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "RETEST_DATE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "SERIAL_NUMBER_CONTROL_CODE"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "6"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "SERIAL_NUMBER_CONTROL_CODE"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "THICKNESS"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "24"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "THICKNESS"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "THICKNESS_UOM"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "25"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "THICKNESS_UOM"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "VOLUME"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "26"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "VOLUME"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "VOLUME_UOM"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "27"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "VOLUME_UOM"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "WIDTH"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "28"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "WIDTH"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+  BEGIN ALR_ALERT_OUTPUTS "WIDTH_UOM"
+    OWNER = "ORACLE12.2.10"
+    SEQUENCE = "29"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2011/01/24 10:10:56"
+    TITLE = "WIDTH_UOM"
+    DEFAULT_SUPPRESS_FLAG = "Y"
+    LAST_UPDATE_DATE = "2011/01/24"
+  END ALR_ALERT_OUTPUTS
+  
+
+  BEGIN ALR_ACTIONS "Raise event" ""
+    OWNER = "ORACLE12.2.10"
+    ACTION_TYPE = "S"
+    ENABLED_FLAG = "Y"
+    DESCRIPTION = "Raises Business Event"
+    ACTION_LEVEL_TYPE = "S"
+    PROGRAM_APPLICATION_NAME = "INV"
+    COLUMN_WRAP_FLAG = "Y"
+    MAXIMUM_SUMMARY_MESSAGE_WIDTH = "80"
+    BODY =
+ "EXEC INV_OPSM_LOT_BE_PKG.PROCESS_LOT(&inventory_item_id,'&concatenated_segments','&item_description','&primary_uom_code',&lot_control_code,'&serial_number_control_code',&cross_reference,&organization_id,'&organization_code','&age',to_date('&best_by_date','DD-MM-YYYY HH24:MI:SS'),to_date('&change_date','DD-MM-YYYY HH24:MI:SS'),to_date('&expiration_date','DD-MM-YYYY HH24:MI:SS'),'&grade_code','&length','&length_uom','&lot_description','&lot_number',to_date('&maturity_date','DD-MM-YYYY HH24:MI:SS'),to_date('&origination_date','DD-MM-YYYY HH24:MI:SS'),'&place_of_origin','&recycled_content',to_date('&retest_date','DD-MM-YYYY HH24:MI:SS'),'&thickness','&thickness_uom','&volume','&volume_uom','&width','&width_uom','&expiration_action_code',to_date('&expiration_action_date','DD-MM-YYYY HH24:MI:SS'),'&parent_lot_number','&reservable_type','&origination_type',&gen_object_id);\n\
+  /"
+    VERSION_NUMBER = "1"
+    LAST_UPDATE_DATE = "2011/01/24"
+  
+    BEGIN ALR_ACTION_OUTPUTS "AGE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "BEST_BY_DATE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "CHANGE_DATE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "CONCATENATED_SEGMENTS"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "CROSS_REFERENCE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "EXPIRATION_ACTION_CODE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "EXPIRATION_ACTION_DATE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "EXPIRATION_DATE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "GEN_OBJECT_ID"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "GRADE_CODE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "INVENTORY_ITEM_ID"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "ITEM_DESCRIPTION"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "LENGTH"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "LENGTH_UOM"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "LOT_CONTROL_CODE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "LOT_DESCRIPTION"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "LOT_NUMBER"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "MATURITY_DATE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "ORGANIZATION_CODE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "ORGANIZATION_ID"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "ORIGINATION_DATE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "ORIGINATION_TYPE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "PARENT_LOT_NUMBER"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "PLACE_OF_ORIGIN"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "PRIMARY_UOM_CODE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "RECYCLED_CONTENT"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "RESERVABLE_TYPE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "RETEST_DATE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "SERIAL_NUMBER_CONTROL_CODE"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "THICKNESS"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "THICKNESS_UOM"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "VOLUME"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "VOLUME_UOM"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "WIDTH"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+    BEGIN ALR_ACTION_OUTPUTS "WIDTH_UOM"
+      OWNER = "ORACLE12.2.10"
+      CRITICAL_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_OUTPUTS
+    
+  END ALR_ACTIONS
+  
+
+
+  BEGIN ALR_ACTION_SETS "Raise event"
+    OWNER = "ORACLE12.2.10"
+    ENABLED_FLAG = "Y"
+    RECIPIENTS_VIEW_ONLY_FLAG = "N"
+    DESCRIPTION = "Raises Business Event"
+    SUPPRESS_FLAG = "N"
+    SEQUENCE = "1"
+    LAST_UPDATE_DATE = "2011/01/24"
+  
+  
+    BEGIN ALR_ACTION_SET_OUTPUTS "AGE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "10"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "BEST_BY_DATE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "11"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "CHANGE_DATE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "12"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "CONCATENATED_SEGMENTS"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "2"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "CROSS_REFERENCE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "7"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "EXPIRATION_ACTION_CODE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "30"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "EXPIRATION_ACTION_DATE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "31"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "EXPIRATION_DATE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "13"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "GEN_OBJECT_ID"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "35"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "GRADE_CODE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "14"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "INVENTORY_ITEM_ID"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "1"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "ITEM_DESCRIPTION"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "3"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "LENGTH"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "15"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "LENGTH_UOM"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "16"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "LOT_CONTROL_CODE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "5"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "LOT_DESCRIPTION"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "17"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "LOT_NUMBER"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "18"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "MATURITY_DATE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "19"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "ORGANIZATION_CODE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "9"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "ORGANIZATION_ID"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "8"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "ORIGINATION_DATE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "20"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "ORIGINATION_TYPE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "34"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "PARENT_LOT_NUMBER"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "32"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "PLACE_OF_ORIGIN"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "21"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "PRIMARY_UOM_CODE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "4"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "RECYCLED_CONTENT"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "22"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "RESERVABLE_TYPE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "33"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "RETEST_DATE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "23"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "SERIAL_NUMBER_CONTROL_CODE"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "6"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "THICKNESS"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "24"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "THICKNESS_UOM"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "25"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "VOLUME"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "26"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "VOLUME_UOM"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "27"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "WIDTH"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "28"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+    BEGIN ALR_ACTION_SET_OUTPUTS "WIDTH_UOM"
+      OWNER = "ORACLE12.2.10"
+      SEQUENCE = "29"
+      SUPPRESS_FLAG = "Y"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_OUTPUTS
+    
+  
+    BEGIN ALR_ACTION_SET_MEMBERS
+      OWNER = "ORACLE12.2.10"
+      ACTION_NAME = "Raise event"
+      SEQUENCE = "1"
+      ENABLED_FLAG = "Y"
+      ABORT_FLAG = "A"
+      LAST_UPDATE_DATE = "2011/01/24"
+    END ALR_ACTION_SET_MEMBERS
+    
+  END ALR_ACTION_SETS
+  
+
+END ALR_ALERTS
+
