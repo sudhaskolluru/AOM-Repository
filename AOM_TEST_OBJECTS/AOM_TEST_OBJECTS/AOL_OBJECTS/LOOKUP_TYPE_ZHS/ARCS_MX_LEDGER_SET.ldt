@@ -1,0 +1,137 @@
+# $Header$
+
+# dbdrv: exec fnd bin FNDLOAD bin &phase=daa+51 checkfile:~PROD:~PATH:~FILE &ui_apps 0 Y UPLOAD @FND:patch/115/import/aflvmlu.lct @~PROD:~PATH/~FILE
+LANGUAGE = "ZHS"
+LDRCONFIG = "aflvmlu.lct 120.1.12020000.2"
+
+#Source Database TPIDEV
+
+#RELEASE_NAME 12.2.10
+
+# -- Begin Entity Definitions -- 
+
+DEFINE FND_LOOKUP_TYPE
+  KEY   VIEW_APPSNAME                   VARCHAR2(50)
+  KEY   LOOKUP_TYPE                     VARCHAR2(30)
+  CTX   APPLICATION_SHORT_NAME          VARCHAR2(50)
+  BASE  CUSTOMIZATION_LEVEL             VARCHAR2(1)
+  CTX   OWNER                           VARCHAR2(4000)
+  BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+  TRANS MEANING                         VARCHAR2(80)
+  TRANS DESCRIPTION                     VARCHAR2(240)
+
+  DEFINE FND_LOOKUP_VALUE
+    KEY   LOOKUP_CODE                     VARCHAR2(30)
+    BASE  ENABLED_FLAG                    VARCHAR2(1)
+    BASE  START_DATE_ACTIVE               VARCHAR2(10)
+    BASE  END_DATE_ACTIVE                 VARCHAR2(10)
+    BASE  TERRITORY_CODE                  VARCHAR2(2)
+    BASE  TAG                             VARCHAR2(150)
+    BASE  ATTRIBUTE_CATEGORY              VARCHAR2(30)
+    BASE  ATTRIBUTE1                      VARCHAR2(150)
+    BASE  ATTRIBUTE2                      VARCHAR2(150)
+    BASE  ATTRIBUTE3                      VARCHAR2(150)
+    BASE  ATTRIBUTE4                      VARCHAR2(150)
+    BASE  ATTRIBUTE5                      VARCHAR2(150)
+    BASE  ATTRIBUTE6                      VARCHAR2(150)
+    BASE  ATTRIBUTE7                      VARCHAR2(150)
+    BASE  ATTRIBUTE8                      VARCHAR2(150)
+    BASE  ATTRIBUTE9                      VARCHAR2(150)
+    BASE  ATTRIBUTE10                     VARCHAR2(150)
+    BASE  ATTRIBUTE11                     VARCHAR2(150)
+    BASE  ATTRIBUTE12                     VARCHAR2(150)
+    BASE  ATTRIBUTE13                     VARCHAR2(150)
+    BASE  ATTRIBUTE14                     VARCHAR2(150)
+    BASE  ATTRIBUTE15                     VARCHAR2(150)
+    CTX   OWNER                           VARCHAR2(4000)
+    BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+    TRANS MEANING                         VARCHAR2(80)
+    TRANS DESCRIPTION                     VARCHAR2(240)
+  END FND_LOOKUP_VALUE
+END FND_LOOKUP_TYPE
+
+# -- End Entity Definitions -- 
+
+
+BEGIN FND_LOOKUP_TYPE "AU" "ARCS_MX_LEDGER_SET"
+  APPLICATION_SHORT_NAME = "XXTPI"
+  CUSTOMIZATION_LEVEL = "U"
+  OWNER = "IUNAK"
+  LAST_UPDATE_DATE = "2022/10/12"
+  MEANING = "ARCS_MX_LEDGER_SET"
+  DESCRIPTION = "List of nonstandard MX Entities"
+
+  BEGIN FND_LOOKUP_VALUE "400"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX1 (TPI-Composites, S. de R.L. de C.V)"
+  END FND_LOOKUP_VALUE
+  
+  BEGIN FND_LOOKUP_VALUE "412"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX4-Gomex-Industrial (Plant-4, Co-412)"
+  END FND_LOOKUP_VALUE
+  
+  BEGIN FND_LOOKUP_VALUE "414"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX6-Industrial (Plant-6, Co-414)"
+  END FND_LOOKUP_VALUE
+  
+  BEGIN FND_LOOKUP_VALUE "430"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX2-Industrial (Plant-2, Co-430)"
+  END FND_LOOKUP_VALUE
+  
+  BEGIN FND_LOOKUP_VALUE "480"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX4 Service (Plant-4, Co-480)"
+  END FND_LOOKUP_VALUE
+  
+  BEGIN FND_LOOKUP_VALUE "440"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX1 Service (Plant-1, Co-440)"
+  END FND_LOOKUP_VALUE
+  
+  BEGIN FND_LOOKUP_VALUE "450"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX2 Service (Plant-2, Co-450)"
+  END FND_LOOKUP_VALUE
+  
+  BEGIN FND_LOOKUP_VALUE "460"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX3 Industrial (Plant-3, Co-460)"
+  END FND_LOOKUP_VALUE
+  
+  BEGIN FND_LOOKUP_VALUE "436"
+    ENABLED_FLAG = "Y"
+    START_DATE_ACTIVE = "2022/10/12"
+    OWNER = "IUNAK"
+    LAST_UPDATE_DATE = "2022/10/12"
+    MEANING = "TPI-MX5-Industrial Tooling (Plant-5, Co-436"
+  END FND_LOOKUP_VALUE
+  
+END FND_LOOKUP_TYPE
+
