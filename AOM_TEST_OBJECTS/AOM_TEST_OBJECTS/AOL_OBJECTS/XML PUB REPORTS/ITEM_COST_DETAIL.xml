@@ -1,0 +1,75 @@
+<!-- ############################################################################# -->
+<!-- Application   :                                                               -->
+<!-- Module        :                                                               -->
+<!-- Author        :                                                               -->
+<!-- Date Created  :                                                               -->
+<!-- Description   :                                                               -->
+<!--                                                                               -->
+<!-- Modification History                                                          -->
+<!-- ====================                                                          -->
+<!-- Who               When      Ver. What                                         -->
+<!-- ===               ====      ===  ====                                         -->
+<!--                             1.0  Created                                      -->
+<!-- ############################################################################# -->
+<dataTemplate name        = "TPI_TK_ITEM_COST_DETAIL" 
+              description = "Item Cost Detail" 
+	      version     = "1.0"
+>
+  <properties>
+    <property name="include_parameters" value="true" />
+    <property name="include_null_Element" value="true" />
+    <property name="xml_tag_case" value="upper" />
+    <property name="db_fetch_size" value="500" />
+    <property name="scalable_mode" value="off" />
+    <property name="include_rowsettag" value="false" />
+    <property name="debug_mode" value="off" />
+  </properties>
+  <parameters>
+		<parameter name = "P_ORG_CODE" dataType = "number" />
+		<parameter name = "P_ITEM_ID" dataType = "varchar2" />
+  </parameters>
+  <dataQuery>
+    <sqlStatement name="Q_SORGU">
+      <![CDATA[
+   select ict.inventory_item_id, ict.organization_id, ict.item_number, replace(ict.description,chr(10)) description, mcat.CATEGORY_SET_NAME, ict.primary_uom_code, ict.cost_type, ict.defaulted_flag, ict.inventory_asset,
+        ict.BASED_ON_ROLLUP,    ict.SHRINKAGE_RATE, ict.ITEM_COST, ict.MATERIAL_COST, ict.MATERIAL_OVERHEAD_COST, ict.RESOURCE_COST, ict.OUTSIDE_PROCESSING_COST, ict.OVERHEAD_COST,
+        (select concatenated_Segments from gl_code_combinations_kfv where code_combination_id = COST_OF_SALES_ACCOUNT) COGS_acct,
+        (select concatenated_Segments from gl_code_combinations_kfv where code_combination_id = SALES_ACCOUNT) SALES_acct,
+        PLANNING_MAKE_BUY_CODE,  DEFAULT_INCLUDE_IN_ROLLUP_FLAG, ict.last_update_Date,
+        (select user_name from fnd_user where user_id = ict.last_updated_by) last_update_person,
+        CATEGORY_CONCAT_SEGS item_cost_category
+  from  CST_ITEM_COST_TYPE_V ict, mtl_item_Categories_v mcat
+ where  ict.inventory_item_id = mcat.inventory_item_id
+   and  ict.organization_id = mcat.organization_id
+   and  ict.organization_id = :P_ORG_CODE
+   and  ict.item_number = NVL(:P_ITEM_ID,ict.item_number)
+        ]]>		
+    </sqlStatement>
+  </dataQuery>
+  <dataStructure>
+  <GROUP name = "Q_SORGU" source ="Q_SORGU">
+	<element name = "item_number"   value ="item_number"/>
+	<element name = "description"   value ="description"/>
+	<element name = "CATEGORY_SET_NAME"   value ="CATEGORY_SET_NAME"/>
+	<element name = "primary_uom_code"   value ="primary_uom_code"/>
+	<element name = "cost_type"   value ="cost_type"/>
+	<element name = "defaulted_flag"   value ="defaulted_flag"/>
+	<element name = "inventory_asset"   value ="inventory_asset"/>
+	<element name = "based_on_rollup"   value ="based_on_rollup"/>
+	<element name = "SHRINKAGE_RATE"   value ="SHRINKAGE_RATE"/>
+	<element name = "ITEM_COST"   value ="ITEM_COST"/>
+	<element name = "MATERIAL_COST"   value ="MATERIAL_COST"/>
+	<element name = "MATERIAL_OVERHEAD_COST"   value ="MATERIAL_OVERHEAD_COST"/>
+	<element name = "RESOURCE_COST"   value ="RESOURCE_COST"/>
+	<element name = "OUTSIDE_PROCESSING_COST"   value ="OUTSIDE_PROCESSING_COST"/>
+	<element name = "OVERHEAD_COST"   value ="OVERHEAD_COST"/>
+	<element name = "COGS_acct"   value ="COGS_acct"/>
+	<element name = "SALES_acct"   value ="SALES_acct"/>
+	<element name = "PLANNING_MAKE_BUY_CODE"   value ="PLANNING_MAKE_BUY_CODE"/>
+	<element name = "DEFAULT_INCLUDE_IN_ROLLUP_FLAG"   value ="DEFAULT_INCLUDE_IN_ROLLUP_FLAG"/>
+	<element name = "last_update_Date"   value ="last_update_Date"/>
+	<element name = "last_update_person"   value ="last_update_person"/>
+	<element name = "item_cost_category"   value ="item_cost_category"/>
+  </GROUP>  
+  </dataStructure>
+</dataTemplate>
