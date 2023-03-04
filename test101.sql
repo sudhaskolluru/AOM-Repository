@@ -97,7 +97,8 @@ alter
 alter
 --create
 --
-create
+create table xxbkp.
+
 SELECT "STATE_NAME",
        null "PROJECT_TASK_ID",
        STATE_NAME "ACTUAL_STATE_NAME",
