@@ -15,5 +15,6 @@ CREATE TABLE XXBKP.temp1 (
     col2 varchar2(20),
     col3 varchar2(20)
 );
+select * from dual;
 
  
