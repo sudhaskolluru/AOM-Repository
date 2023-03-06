@@ -48,6 +48,9 @@ SELECT "STATE_NAME",
   --alter
   */
 
+create
+alter
+drop
 UNION ALL
 SELECT "STATE_NAME",
        null "PROJECT_TASK_ID",
