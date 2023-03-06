@@ -101,8 +101,8 @@ alter
 create table xxbkp.
 create table xxbkp.
 CREATE TABLE XXBKP.
-CREATE
-create
+CREATE table xxbkP.
+create TABLE XXBKP.
 alter
 --create table xxbkp.
 
