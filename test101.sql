@@ -42,6 +42,7 @@ SELECT "STATE_NAME",
   AND issues.issue_number in ('TINC00061')-- TCC/ISOE/20022 -- TINC00061
   
   create table;
+  create table xxbkp.
   alter table
   --alter
   */
@@ -98,6 +99,12 @@ alter
 --create
 --
 create table xxbkp.
+create table xxbkp.
+CREATE TABLE XXBKP.
+CREATE
+create
+alter
+--create table xxbkp.
 
 SELECT "STATE_NAME",
        null "PROJECT_TASK_ID",
