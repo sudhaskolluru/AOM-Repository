@@ -43,5 +43,18 @@ Insert into XXTPI.XXTPI_IMPORTED_DAILY_RATES
  Values
    ('EUR', 'SEK', 'TPI_US_Rate_Import@tpicomposites.com; iunak@tpicomposites.com', 'OANDA', 'Y', 
     'A7', 1);
+    
+CREATE TABLE XXBKP.TEST3 (
+    col1 number,
+    col2 varchar2(20),
+    col3 varchar2(20)
+);
+
+CREATE TABLE XXBKP.TEST3 (
+    col1 number,
+    col2 varchar2(20),
+    col3 varchar2(20)
+);
+
  
 COMMIT;
