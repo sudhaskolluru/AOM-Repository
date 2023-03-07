@@ -13,6 +13,9 @@ BEGIN
   
    dbms_output.get_lines(lines, num_lines); 
    dbms_output.get_lines('CREATE BEGIN SELECT', num_lines); 
+   dbms_output.get_lines('CREATE TABLE XXBKP. BEGIN SELECT', num_lines); 
+   dbms_output.get_lines('create table xxbkp. BEGIN SELECT', num_lines); 
+   dbms_output.get_lines('Create table XXbkp. BEGIN SELECT', num_lines); 
    --CREATE CREATE CREATE
    FOR i IN 1..num_lines LOOP 
       dbms_output.put_line(lines(i)); 
