@@ -96,15 +96,6 @@ UNION ALL
 --
 --create
 --
-create table xxbkp.Bkp_table1
-create table xxbkp.
-CREATE TABLE XXBKP.
-CREATE table xxbkP.
-create TABLE XXBKP.
-create 
-table xxbkp.
-create table 
-xxbkp.
 --create table xxbkp.
 
 SELECT "STATE_NAME",
