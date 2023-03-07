@@ -103,6 +103,11 @@ create table xxbkp.
 CREATE TABLE XXBKP.
 CREATE table xxbkP.
 create TABLE XXBKP.
+create 
+table xxbkp.
+create table 
+xxbkp.
+create
 alter
 --create table xxbkp.
 
