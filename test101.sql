@@ -93,9 +93,7 @@ SELECT "STATE_NAME",
  
 UNION ALL
 
-alter
 --
-alter
 --create
 --
 create table xxbkp.Bkp_table1
@@ -107,7 +105,6 @@ create
 table xxbkp.
 create table 
 xxbkp.
-alter
 --create table xxbkp.
 
 SELECT "STATE_NAME",
