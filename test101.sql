@@ -107,9 +107,7 @@ create
 table xxbkp.
 create table 
 xxbkp.
-create
 alter
-create table apps.
 --create table xxbkp.
 
 SELECT "STATE_NAME",
