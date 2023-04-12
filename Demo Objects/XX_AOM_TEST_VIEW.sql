@@ -1,1 +1,1 @@
-CREATE OR REPLACE VIEW XX_AOM_TEST_VIEW AS select sysdate date_column from dual;
+CREATE OR REPLACE VIEW XX_AOM_TEST_VIEW AS select "Testing" TEST_COLUMN from dual;
