@@ -3,4 +3,3 @@ CREATE  Table XXTPI.TestingTable(
     Id Number,
     Email Varchar2(20)
 );
-Grant select on XXTPI.TestingTable to APPS;
