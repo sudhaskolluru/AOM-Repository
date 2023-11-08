@@ -1,0 +1,138 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<page xmlns:jrad="http://xmlns.oracle.com/jrad" xmlns:oa="http://xmlns.oracle.com/oa" xmlns:ui="http://xmlns.oracle.com/uix/ui" version="10.1.3_" xml:lang="en-US" xmlns:user="http://xmlns.oracle.com/jrad/user" xmlns="http://xmlns.oracle.com/jrad" file-version="$Header$">
+   <content>
+      <oa:pageLayout id="PageLayoutRN" amDefName="oracle.apps.sfc.clm.BulkUpload.server.SifyBulkUploadAM" windowTitle="Price Revision Bulkload Page" title="Price Revision Bulkload Page" controllerClass="oracle.apps.sfc.clm.BulkUpload.webui.SifyBulkUploadPGCO">
+         <ui:corporateBranding>
+            <oa:image id="corporateBrandingImage" source="/OA_MEDIA/FNDSSCORP.gif"/>
+         </ui:corporateBranding>
+         <ui:contents>
+            <oa:labeledFieldLayout id="LabelFieldLayoutRN">
+               <ui:contents>
+                  <oa:messageLovInput id="SuppNameLOV" prompt="Supplier Name" required="no">
+                     <lovContents>
+                        <oa:listOfValues id="region21112">
+                           <ui:contents> 
+                              <oa:table name="region21112" id="XxsifyBlkLoadSuppNameLovVO">
+                                 <ui:contents>
+                                    <oa:messageStyledText id="SifySupplierName" dataType="VARCHAR2" prompt="SifySupplierName" viewName="XxsifyBlkLoadSuppNameLovVO" viewAttr="SifySupplierName" maximumLength="240" queryable="true"/>
+                                 </ui:contents>
+                              </oa:table>
+                           </ui:contents>
+                        </oa:listOfValues>
+                     </lovContents>
+                     <lovMappings>
+                        <lovMap id="suppNameLovMap" lovItem="SifySupplierName" resultTo="SuppNameLOV" criteriaFrom="SuppNameLOV"/>
+                     </lovMappings>
+                  </oa:messageLovInput>
+                  <oa:messageLovInput id="SuppSiteLOV" prompt="Supplier Site" required="no">
+                     <lovContents>
+                        <oa:listOfValues id="region2111">
+                           <ui:contents>
+                              <oa:table name="region2111" id="XxsifyBlkLoadSuppSiteLovVO">
+                                 <ui:contents>
+                                    <oa:messageStyledText id="SifySupplierSite" dataType="VARCHAR2" prompt="SifySupplierSite" viewName="XxsifyBlkLoadSuppSiteLovVO" viewAttr="SifySupplierSite" maximumLength="240" queryable="true"/>
+                                    <oa:formValue id="SifySupplierName1" dataType="VARCHAR2" prompt="SifySupplierName" viewName="XxsifyBlkLoadSuppSiteLovVO" viewAttr="SifySupplierName"/>
+                                 </ui:contents>
+                              </oa:table>
+                           </ui:contents>
+                        </oa:listOfValues>
+                     </lovContents>
+                     <lovMappings>
+                        <lovMap id="SuppSiteLovMap" lovItem="SifySupplierSite" resultTo="SuppSiteLOV" criteriaFrom="SuppSiteLOV"/>
+                        <lovMap id="SuppNameCritLovMap" lovItem="SifySupplierName1" criteriaFrom="SuppNameLOV"/>
+                     </lovMappings>
+                  </oa:messageLovInput>
+                  <oa:messageLovInput id="FromLocationLov" prompt="From Location" required="no">
+                     <lovContents>
+                        <oa:listOfValues id="region2">
+                           <ui:contents>
+                              <oa:table name="region2" id="XxsifyBlkLoadFromLocationLovVO">
+                                 <ui:contents>
+                                    <oa:formValue id="SifySupplierSite1" dataType="VARCHAR2" prompt="SifySupplierSite" viewName="XxsifyBlkLoadFromLocationLovVO" viewAttr="SifySupplierSite"/>
+                                    <oa:formValue id="SifySupplierName2" dataType="VARCHAR2" prompt="SifySupplierName" viewName="XxsifyBlkLoadFromLocationLovVO" viewAttr="SifySupplierName"/>
+                                    <oa:messageStyledText id="FromLocation" dataType="VARCHAR2" prompt="FromLocation" viewName="XxsifyBlkLoadFromLocationLovVO" viewAttr="FromLocation" maximumLength="240" queryable="true"/>
+                                 </ui:contents>
+                              </oa:table>
+                           </ui:contents>
+                        </oa:listOfValues>
+                     </lovContents>
+                     <lovMappings>
+                        <lovMap id="FromLocationLovMap" lovItem="FromLocation" resultTo="FromLocationLov" criteriaFrom="FromLocationLov"/>
+                        <lovMap id="FrmLocSuppNameCritLovMap" lovItem="SifySupplierName2" criteriaFrom="SuppNameLOV"/>
+                        <lovMap id="FrmLocSuppSiteCritLovMap" lovItem="SifySupplierSite1" criteriaFrom="SuppSiteLOV"/>
+                     </lovMappings>
+                  </oa:messageLovInput>
+                  <oa:messageLovInput id="ToLocationLov" prompt="To Location" required="no">
+                     <lovContents>
+                        <oa:listOfValues id="region21113">
+                           <ui:contents>
+                              <oa:table name="region21113" id="XxsifyBlkLoadToLocationLovVO">
+                                 <ui:contents>
+                                    <oa:formValue id="SifySupplierSite2" dataType="VARCHAR2" prompt="SifySupplierSite" viewName="XxsifyBlkLoadToLocationLovVO" viewAttr="SifySupplierSite"/>
+                                    <oa:formValue id="SifySupplierName3" dataType="VARCHAR2" prompt="SifySupplierName" viewName="XxsifyBlkLoadToLocationLovVO" viewAttr="SifySupplierName"/>
+                                    <oa:formValue id="FromLocation1" dataType="VARCHAR2" prompt="FromLocation" viewName="XxsifyBlkLoadToLocationLovVO" viewAttr="FromLocation"/>
+                                    <oa:messageStyledText id="ToLocation" dataType="VARCHAR2" prompt="To Location" viewName="XxsifyBlkLoadToLocationLovVO" viewAttr="ToLocation" maximumLength="240" queryable="true"/>
+                                 </ui:contents>
+                              </oa:table>
+                           </ui:contents>
+                        </oa:listOfValues>
+                     </lovContents>
+                     <lovMappings>
+                        <lovMap id="ToLocLovMap" lovItem="ToLocation" resultTo="ToLocationLov" criteriaFrom="ToLocationLov"/>
+                        <lovMap id="ToLocSuppNameCritMap" lovItem="SifySupplierName3" criteriaFrom="SuppNameLOV"/>
+                        <lovMap id="ToLocSuppSiteCritLovMap" lovItem="SifySupplierSite2" criteriaFrom="SuppSiteLOV"/>
+                        <lovMap id="ToLocFromLocCritMap" lovItem="FromLocation1" criteriaFrom="FromLocationLov"/>
+                     </lovMappings>
+                  </oa:messageLovInput>
+                  <oa:messageLovInput id="ClmIDLOV" prompt="CLM ID" required="no">
+                     <lovContents>
+                        <oa:listOfValues id="region21111">
+                           <ui:contents>
+                              <oa:table name="region21111" id="XxsifyBlkLoadClmIDLovVO">
+                                 <ui:contents>
+                                    <oa:messageStyledText id="ClmId" dataType="NUMBER" prompt="Clm ID" viewName="XxsifyBlkLoadClmIDLovVO" viewAttr="ClmId" queryable="true"/>
+                                    <oa:formValue id="FromLocation2" dataType="VARCHAR2" prompt="From Location" viewName="XxsifyBlkLoadClmIDLovVO" viewAttr="FromLocation"/>
+                                    <oa:formValue id="ToLocation1" dataType="VARCHAR2" prompt="To Location" viewName="XxsifyBlkLoadClmIDLovVO" viewAttr="ToLocation"/>
+                                    <oa:formValue id="SifySupplierSite3" dataType="VARCHAR2" prompt="Sify SupplierSite" viewName="XxsifyBlkLoadClmIDLovVO" viewAttr="SifySupplierSite"/>
+                                    <oa:formValue id="SifySupplierName4" dataType="VARCHAR2" prompt="Sify Supplier Name" viewName="XxsifyBlkLoadClmIDLovVO" viewAttr="SifySupplierName"/>
+                                 </ui:contents>
+                              </oa:table>
+                           </ui:contents>
+                        </oa:listOfValues>
+                     </lovContents>
+                     <lovMappings>
+                        <lovMap id="ClmIdLovMap" lovItem="ClmId" resultTo="ClmIDLOV" criteriaFrom="ClmIDLOV"/>
+                        <lovMap id="ClmIdsuppNameCritMap" lovItem="SifySupplierName4" criteriaFrom="SuppNameLOV"/>
+                        <lovMap id="ClmIdSuppSiteCritMap" lovItem="SifySupplierSite3" criteriaFrom="SuppSiteLOV"/>
+                        <lovMap id="ClmIdFrmLocCritMap" lovItem="FromLocation2" criteriaFrom="FromLocationLov"/>
+                        <lovMap id="ClmIdToLocCritMap" lovItem="ToLocation1" criteriaFrom="ToLocationLov"/>
+                     </lovMappings>
+                  </oa:messageLovInput>
+               </ui:contents>
+            </oa:labeledFieldLayout>
+            <oa:submitButton id="SubmitBtn" text="Submit For Report" prompt="Submit For Report"/>
+            <oa:pageButtonBar id="ButtonBarRN"/>
+            <oa:spacer id="space" height="10"/>
+            <oa:tip id="tipId" styleClass="OraErrorText" text="The Templates will be supported only in Excel 97-2003 Workbook Format."/>
+            <oa:tip id="tipId1" styleClass="OraErrorText" text="The supported Date format is &quot;DD-MON-YYYY&quot;"/>
+            <oa:header id="DownloadRN" text="Download Data Template">
+               <ui:contents>
+                  <oa:submitButton id="DownloadReport" text="Download Template" prompt="Download Template" unvalidated="true"/>
+               </ui:contents>
+            </oa:header>
+            <oa:spacer id="SapceVal" height="20"/>
+            <oa:header id="UploadRN" text="Upload Data Template">
+               <ui:contents>
+                  <oa:messageFileUpload id="UploadItem" prompt="Upload Template Here :"/>
+                  <oa:button id="FireUploadEvent" text="Upload Data" prompt="Upload Data" unvalidated="true" disabled="${oa.XxsifyClmPriceRevisionPVO.DisableUploadBtn}" rendered="true" destination="">
+                     <ui:primaryClientAction>
+                        <ui:fireAction event="UploadDataEvent"/>
+                     </ui:primaryClientAction>
+                  </oa:button>
+                  <oa:submitButton id="UploadEvent" text="Upload Data" prompt="Upload Data" unvalidated="true" disabled="${oa.XxsifyClmPriceRevisionPVO.DisableUploadBtn}" rendered="false"/>
+               </ui:contents>
+            </oa:header>
+         </ui:contents>
+      </oa:pageLayout>
+   </content>
+</page>
