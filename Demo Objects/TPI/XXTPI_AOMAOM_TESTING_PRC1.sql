@@ -15,6 +15,7 @@ CREATE OR REPLACE PROCEDURE XXTPI.XXTPI_AOM_TEST_PRC AS
 begin
 dbms_output.put_line('Ç, Ş, Ğ, I, İ, Ö, Ü');
 dbms_output.put_line('Günaydın. Tünaydın. Nasılsın?');
+dbms_output.put_line('Günaydın  Ğ');
 --Dummy Package Body for AOM test in UAT
 --The line added by Sangeetha Sudha Kolluru for testing
 NULL;
