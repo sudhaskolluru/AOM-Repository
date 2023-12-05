@@ -1,6 +1,11 @@
-INSERT INTO XXTPI_AOM_EMP_TEST_TBL (emp_no,emp_name,salary) values (6,'Bu bir Çin dili',1000.0);
-INSERT INTO XXTPI_AOM_EMP_TEST_TBL (emp_no,emp_name,salary) values (7,'ve test nesnesidir',500.0);
-INSERT INTO XXTPI_AOM_EMP_TEST_TBL (emp_no,emp_name,salary) values (8,'Günaydın',600.0);
-INSERT INTO XXTPI_AOM_EMP_TEST_TBL (emp_no,emp_name,salary) values (9,'Tünaydın',700.0);
-INSERT INTO XXTPI_AOM_EMP_TEST_TBL (emp_no,emp_name,salary) values (10,'Nasılsın',800.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (11,'Bu bir Çin dili Günaydın.',10000.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (12,'ve test nesnesidir Tünaydın.',2005.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (13,'Buenos días Hasta mañana',1008.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (14,'Feliz cumpleaños',2003.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (15,'Hola Buenos días',10010.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (16,'¿Cómo estás? Me gustaría',2009.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (17,'I cant even',10065.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (18,'No big deal',20098.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (19,'你叫什么名字',10098.0);
+INSERT INTO XXTPI_AOM_TEST_EMP_TBL (emp_no,emp_name,salary) values (20,'你来自哪里  多少钱',20045.0);
 commit;
