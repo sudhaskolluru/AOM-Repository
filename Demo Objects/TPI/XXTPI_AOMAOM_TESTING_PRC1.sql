@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE APPS.XXTPI_AOM_TEST_PRC AS
+CREATE OR REPLACE PROCEDURE XXTPI.XXTPI_AOM_TEST_PRC AS
 /* Header: TicketNumber Date User 1.1 */
 
 /******************************************************************************
