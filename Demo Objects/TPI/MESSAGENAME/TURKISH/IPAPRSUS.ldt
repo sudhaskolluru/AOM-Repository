@@ -1,0 +1,33 @@
+# $Header$
+
+# dbdrv: exec fnd bin FNDLOAD bin &phase=daa+51 checkfile:~PROD:~PATH:~FILE &ui_apps 0 Y UPLOAD @FND:patch/115/import/afsload.lct @~PROD:~PATH/~FILE
+LANGUAGE = "ZHS"
+LDRCONFIG = "afsload.lct 120.5.12020000.4"
+
+#Source Database TPIDEV
+
+#RELEASE_NAME 12.2.10
+
+# -- Begin Entity Definitions -- 
+
+DEFINE FORM
+  KEY   APPLICATION_SHORT_NAME          VARCHAR2(4000)
+  KEY   FORM_NAME                       VARCHAR2(4000)
+  BASE  AUDIT_ENABLED_FLAG              VARCHAR2(1)
+  BASE  LAST_UPDATE_DATE                VARCHAR2(10)
+  TRANS USER_FORM_NAME                  VARCHAR2(80)
+  TRANS DESCRIPTION                     VARCHAR2(240)
+  CTX   OWNER                           VARCHAR2(4000)
+END FORM
+
+# -- End Entity Definitions -- 
+
+
+BEGIN FORM "IPA" "IPAPRSUS"
+  AUDIT_ENABLED_FLAG = "N"
+  LAST_UPDATE_DATE = "2000/02/07"
+  USER_FORM_NAME = "暂挂项目的资本化利息"
+  DESCRIPTION = "暂挂项目的资本化利息"
+  OWNER = "ORACLE12.2.10"
+END FORM
+
