@@ -1,8 +1,12 @@
-CREATE SCHEMA DummyPackage;
-CREATE PROCEDURE DummyPackage.dummy_procedure
-AS
-BEGIN
-    -- This procedure does nothing
-    RETURN;
-END;
+CREATE OR REPLACE PACKAGE DummyPackage AS
+  PROCEDURE DisplayMessage;
+END DummyPackage;
+/
+
+CREATE OR REPLACE PACKAGE BODY DummyPackage AS
+  PROCEDURE DisplayMessage AS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Hello from DummyPackage!');
+  END DisplayMessage;
+END DummyPackage;
 /
