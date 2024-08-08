@@ -1,1 +1,1 @@
-selet * from dual;
+select * from dual;
