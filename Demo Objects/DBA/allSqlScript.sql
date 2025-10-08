@@ -1,4 +1,3 @@
-INSERT INTO test_tableee (id, name) VALUES (1, 'Alice');
 
 CREATE OR REPLACE PROCEDURE proc_test IS
 BEGIN
