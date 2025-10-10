@@ -2,7 +2,7 @@ CREATE OR REPLACE PROCEDURE proc_test IS
 BEGIN
   DBMS_OUTPUT.PUT_LINE('Hello World');
 END;
-
+/
 
 drop table test_table;
 -- Create a test table
