@@ -1,0 +1,1 @@
+drop procedure proc_test;
