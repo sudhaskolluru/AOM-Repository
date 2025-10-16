@@ -1,1 +1,4 @@
-drop procedure proc_test;
+CREATE OR REPLACE PROCEDURE proc_test IS
+BEGIN
+  DBMS_OUTPUT.PUT_LINE('Hello World');
+END;
