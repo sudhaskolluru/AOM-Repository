@@ -1,0 +1,1 @@
+ALTER TABLE xxtriniti_pf_item_stg_tbl MODIFY description VARCHAR2(1000);
