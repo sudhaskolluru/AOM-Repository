@@ -2,7 +2,7 @@
 # demo_simple.sh - sample migration script
 
 SRC_DIR=/tmp/demo_src
-DEST_DIR=/tmp/demo_dest
+DEST_DIR=$XXTRINITI_TOP/demo_dest
 LOG=/tmp/demo_simple.log
 
 echo "Migration started at $(date)"
