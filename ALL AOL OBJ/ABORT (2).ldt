@@ -1,0 +1,37 @@
+# $Header$
+
+# dbdrv: exec fnd bin FNDLOAD bin &phase=daa+56 checkfile:~PROD:~PATH:~FILE &ui_apps 0 Y UPLOAD @FND:patch/115/import/afcpprog.lct @~PROD:~PATH/~FILE
+LANGUAGE = "US"
+LDRCONFIG = "afcpprog.lct 120.7.12020000.7"
+
+#Source Database R122TEST
+
+#RELEASE_NAME 12.2.10
+
+# -- Begin Entity Definitions -- 
+
+DEFINE EXECUTABLE
+  KEY   EXECUTABLE_NAME                 VARCHAR2(30)
+  KEY   APPLICATION_SHORT_NAME          VARCHAR2(50)
+  CTX   OWNER                           VARCHAR2(4000)
+  BASE  LAST_UPDATE_DATE                VARCHAR2(75)
+  BASE  EXECUTION_METHOD_CODE           VARCHAR2(1)
+  BASE  EXECUTION_FILE_NAME             VARCHAR2(61)
+  BASE  SUBROUTINE_NAME                 VARCHAR2(30)
+  BASE  EXECUTION_FILE_PATH             VARCHAR2(510)
+  TRANS USER_EXECUTABLE_NAME            VARCHAR2(240)
+  TRANS DESCRIPTION                     VARCHAR2(240)
+END EXECUTABLE
+
+# -- End Entity Definitions -- 
+
+
+BEGIN EXECUTABLE "ABORT" "FND"
+  OWNER = "ORACLE12.2.10"
+  LAST_UPDATE_DATE = "2011/01/13"
+  EXECUTION_METHOD_CODE = "A"
+  EXECUTION_FILE_NAME = "ABORT"
+  USER_EXECUTABLE_NAME = "ABORT"
+  DESCRIPTION = "Terminate requests and shutdown managers"
+END EXECUTABLE
+
