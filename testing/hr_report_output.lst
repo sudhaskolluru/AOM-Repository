@@ -1,0 +1,150 @@
+-- ============================================================
+-- FILE        : hr_report_output.lst
+-- TYPE        : SQL*Plus Spool / Listing Output File
+-- DESCRIPTION : HR Report Output - Employee & Payroll Summary
+-- GENERATED   : 31-MAR-2026 10:00:00
+-- ============================================================
+
+
+SQL> SET PAGESIZE 60
+SQL> SET LINESIZE 150
+SQL> SET ECHO ON
+SQL> SPOOL hr_report_output.lst
+
+
+SQL> -- ========== REPORT 1: EMPLOYEE SUMMARY BY DEPARTMENT ==========
+
+SQL> SELECT d.department_name,
+  2         COUNT(e.employee_id)     AS total_employees,
+  3         ROUND(AVG(e.salary), 2)  AS avg_salary,
+  4         MIN(e.salary)            AS min_salary,
+  5         MAX(e.salary)            AS max_salary,
+  6         SUM(e.salary)            AS total_salary_cost
+  7  FROM   employees   e
+  8  JOIN   departments d ON e.department_id = d.department_id
+  9  GROUP  BY d.department_name
+ 10  ORDER  BY total_salary_cost DESC;
+
+
+DEPARTMENT_NAME          TOTAL_EMPLOYEES  AVG_SALARY  MIN_SALARY  MAX_SALARY  TOTAL_SALARY_COST
+------------------------ ---------------  ----------  ----------  ----------  -----------------
+Sales                              45      8500.00      4200.00     24000.00         382500.00
+IT                                 28      9200.00      4500.00     22000.00         257600.00
+Finance                            18     10500.00      5500.00     20000.00         189000.00
+Marketing                          22      7800.00      4000.00     18000.00         171600.00
+Operations                         30      5600.00      3500.00     14000.00         168000.00
+Engineering                        15     11000.00      6000.00     25000.00         165000.00
+Human Resources                    12      7200.00      4200.00     16000.00          86400.00
+Administration                      8      5900.00      3800.00     13000.00          47200.00
+Logistics                          10      4800.00      3200.00     10000.00          48000.00
+Support                            20      4200.00      3000.00      9000.00          84000.00
+
+10 rows selected.
+
+
+SQL> -- ========== REPORT 2: TOP 10 HIGHEST PAID EMPLOYEES ==========
+
+SQL> SELECT ROWNUM AS rank,
+  2         e.employee_id,
+  3         e.first_name || ' ' || e.last_name  AS full_name,
+  4         d.department_name,
+  5         j.job_title,
+  6         e.salary,
+  7         ROUND(e.salary * 12, 2)             AS annual_salary
+  8  FROM   employees   e
+  9  JOIN   departments d ON e.department_id = d.department_id
+ 10  JOIN   jobs         j ON e.job_id        = j.job_id
+ 11  ORDER  BY e.salary DESC
+ 12  FETCH  FIRST 10 ROWS ONLY;
+
+
+RANK  EMPLOYEE_ID  FULL_NAME              DEPARTMENT_NAME  JOB_TITLE                  SALARY   ANNUAL_SALARY
+----  -----------  ---------------------  ---------------  -------------------------  -------  -------------
+   1         1001  Steven King            Administration   President                  24000.00     288000.00
+   2         1002  Neena Kochhar          Administration   Administration VP          17000.00     204000.00
+   3         1003  Lex De Haan            Administration   Administration VP          17000.00     204000.00
+   4         1004  John Russell           Sales            Sales Manager              14000.00     168000.00
+   5         1005  Karen Partners         Sales            Sales Manager              13500.00     162000.00
+   6         1006  Michael Hartstein      Marketing        Marketing Manager          13000.00     156000.00
+   7         1007  Shelley Higgins        Finance          Accounting Manager         12000.00     144000.00
+   8         1008  Nancy Greenberg        Finance          Finance Manager            12000.00     144000.00
+   9         1009  Den Raphaely           Purchasing       Purchasing Manager         11000.00     132000.00
+  10         1010  Alberto Errazuriz      Sales            Sales Representative       12000.00     144000.00
+
+10 rows selected.
+
+
+SQL> -- ========== REPORT 3: PAYROLL SUMMARY - MARCH 2026 ==========
+
+SQL> SELECT d.department_name,
+  2         COUNT(pl.employee_id)   AS employees_paid,
+  3         SUM(pl.gross_pay)       AS total_gross,
+  4         SUM(pl.deductions)      AS total_deductions,
+  5         SUM(pl.net_pay)         AS total_net_pay
+  6  FROM   payroll_ledger pl
+  7  JOIN   employees      e  ON pl.employee_id  = e.employee_id
+  8  JOIN   departments    d  ON e.department_id = d.department_id
+  9  WHERE  pl.pay_month = 3 AND pl.pay_year = 2026
+ 10  GROUP  BY d.department_name
+ 11  ORDER  BY total_net_pay DESC;
+
+
+DEPARTMENT_NAME          EMPLOYEES_PAID  TOTAL_GROSS   TOTAL_DEDUCTIONS  TOTAL_NET_PAY
+------------------------ --------------  ------------  ----------------  -------------
+Sales                              45      382500.00         64125.00       299316.00
+IT                                 28      257600.00         43173.00       201579.80
+Finance                            18      189000.00         31668.00       147924.00
+Marketing                          22      171600.00         28748.00       134302.80
+Operations                         30      168000.00         28140.00       131418.00
+Engineering                        15      165000.00         27645.00       129019.50
+Human Resources                    12       86400.00         14472.00        67579.20
+Support                            20       84000.00         14070.00        65709.00
+Administration                      8       47200.00          7906.00        36928.40
+Logistics                          10       48000.00          8040.00        37524.00
+
+10 rows selected.
+
+
+SQL> -- ========== REPORT 4: EMPLOYEES WITH NO COMMISSION ==========
+
+SQL> SELECT COUNT(*) AS employees_without_commission
+  2  FROM   employees
+  3  WHERE  commission_pct = 0 OR commission_pct IS NULL;
+
+
+EMPLOYEES_WITHOUT_COMMISSION
+----------------------------
+                         142
+
+1 row selected.
+
+
+SQL> -- ========== REPORT 5: JOB GRADE DISTRIBUTION ==========
+
+SQL> SELECT jg.grade_level,
+  2         COUNT(e.employee_id)  AS emp_count,
+  3         MIN(e.salary)         AS min_sal,
+  4         MAX(e.salary)         AS max_sal
+  5  FROM   employees  e
+  6  JOIN   job_grades jg ON e.salary BETWEEN jg.lowest_sal AND jg.highest_sal
+  7  GROUP  BY jg.grade_level
+  8  ORDER  BY jg.grade_level;
+
+
+GRADE_LEVEL  EMP_COUNT  MIN_SAL   MAX_SAL
+-----------  ---------  --------  --------
+A                   22   3000.00   4999.00
+B                   38   5000.00   6999.00
+C                   45   7000.00   9999.00
+D                   52  10000.00  14999.00
+E                   36  15000.00  19999.00
+F                   15  20000.00  24000.00
+
+6 rows selected.
+
+
+SQL> SPOOL OFF
+
+-- ============================================================
+-- END OF LISTING FILE
+-- ============================================================

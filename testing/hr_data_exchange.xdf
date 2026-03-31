@@ -1,0 +1,389 @@
+-- ============================================================
+-- FILE        : hr_data_exchange.xdf
+-- TYPE        : Exchange Data Format / External Data Definition
+-- DESCRIPTION : HR Schema Data Exchange & External Table Definitions
+-- TOOL        : Oracle XDF / Data Exchange Format
+-- ============================================================
+
+
+-- ============================================================
+-- SECTION 1: EXTERNAL TABLE DEFINITIONS (Oracle External Tables)
+-- ============================================================
+
+-- External Table: Load Employees from CSV
+CREATE OR REPLACE DIRECTORY hr_data_dir AS '/oracle/data/hr/input';
+
+CREATE TABLE ext_employees_load (
+    employee_id     NUMBER(6),
+    first_name      VARCHAR2(30),
+    last_name       VARCHAR2(30),
+    email           VARCHAR2(60),
+    phone_number    VARCHAR2(20),
+    hire_date       VARCHAR2(20),
+    job_id          VARCHAR2(10),
+    salary          NUMBER(8,2),
+    commission_pct  NUMBER(2,2),
+    manager_id      NUMBER(6),
+    department_id   NUMBER(4),
+    status          VARCHAR2(20)
+)
+ORGANIZATION EXTERNAL (
+    TYPE oracle_loader
+    DEFAULT DIRECTORY hr_data_dir
+    ACCESS PARAMETERS (
+        RECORDS DELIMITED BY NEWLINE
+        SKIP 1
+        FIELDS TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        MISSING FIELD VALUES ARE NULL
+        (
+            employee_id,
+            first_name,
+            last_name,
+            email,
+            phone_number,
+            hire_date       DATE_FORMAT DATE MASK "YYYY-MM-DD",
+            job_id,
+            salary,
+            commission_pct,
+            manager_id,
+            department_id,
+            status
+        )
+    )
+    LOCATION ('employees_load.csv')
+)
+REJECT LIMIT UNLIMITED
+PARALLEL 4;
+
+
+-- External Table: Load Departments from CSV
+CREATE TABLE ext_departments_load (
+    department_id    NUMBER(4),
+    department_name  VARCHAR2(50),
+    manager_id       NUMBER(6),
+    location_id      NUMBER(4)
+)
+ORGANIZATION EXTERNAL (
+    TYPE oracle_loader
+    DEFAULT DIRECTORY hr_data_dir
+    ACCESS PARAMETERS (
+        RECORDS DELIMITED BY NEWLINE
+        SKIP 1
+        FIELDS TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        MISSING FIELD VALUES ARE NULL
+        (
+            department_id,
+            department_name,
+            manager_id,
+            location_id
+        )
+    )
+    LOCATION ('departments_load.csv')
+)
+REJECT LIMIT UNLIMITED;
+
+
+-- External Table: Load Jobs from CSV
+CREATE TABLE ext_jobs_load (
+    job_id      VARCHAR2(10),
+    job_title   VARCHAR2(50),
+    min_salary  NUMBER(8,2),
+    max_salary  NUMBER(8,2)
+)
+ORGANIZATION EXTERNAL (
+    TYPE oracle_loader
+    DEFAULT DIRECTORY hr_data_dir
+    ACCESS PARAMETERS (
+        RECORDS DELIMITED BY NEWLINE
+        SKIP 1
+        FIELDS TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        MISSING FIELD VALUES ARE NULL
+        (
+            job_id,
+            job_title,
+            min_salary,
+            max_salary
+        )
+    )
+    LOCATION ('jobs_load.csv')
+)
+REJECT LIMIT UNLIMITED;
+
+
+-- External Table: Load Payroll Ledger from CSV
+CREATE TABLE ext_payroll_load (
+    employee_id   NUMBER(6),
+    pay_month     NUMBER(2),
+    pay_year      NUMBER(4),
+    gross_pay     NUMBER(10,2),
+    deductions    NUMBER(10,2),
+    net_pay       NUMBER(10,2),
+    processed_at  VARCHAR2(30)
+)
+ORGANIZATION EXTERNAL (
+    TYPE oracle_loader
+    DEFAULT DIRECTORY hr_data_dir
+    ACCESS PARAMETERS (
+        RECORDS DELIMITED BY NEWLINE
+        SKIP 1
+        FIELDS TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        MISSING FIELD VALUES ARE NULL
+        (
+            employee_id,
+            pay_month,
+            pay_year,
+            gross_pay,
+            deductions,
+            net_pay,
+            processed_at  DATE_FORMAT TIMESTAMP MASK "YYYY-MM-DD HH24:MI:SS"
+        )
+    )
+    LOCATION ('payroll_load.csv')
+)
+REJECT LIMIT UNLIMITED
+PARALLEL 2;
+
+
+-- ============================================================
+-- SECTION 2: DATA EXCHANGE / IMPORT PROCEDURES
+-- ============================================================
+
+CREATE OR REPLACE PROCEDURE xdf_load_employees AS
+    v_inserted  NUMBER := 0;
+    v_skipped   NUMBER := 0;
+    v_error_msg VARCHAR2(500);
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('=== XDF: EMPLOYEE DATA LOAD STARTED ===');
+    DBMS_OUTPUT.PUT_LINE('Timestamp: ' || TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS'));
+
+    FOR r IN (
+        SELECT *
+        FROM   ext_employees_load
+        WHERE  employee_id IS NOT NULL
+        AND    last_name   IS NOT NULL
+        AND    email       IS NOT NULL
+    ) LOOP
+        BEGIN
+            MERGE INTO employees tgt
+            USING (
+                SELECT r.employee_id   AS employee_id,
+                       r.first_name    AS first_name,
+                       r.last_name     AS last_name,
+                       r.email         AS email,
+                       r.phone_number  AS phone_number,
+                       TO_DATE(r.hire_date, 'YYYY-MM-DD') AS hire_date,
+                       r.job_id        AS job_id,
+                       r.salary        AS salary,
+                       r.commission_pct AS commission_pct,
+                       r.manager_id    AS manager_id,
+                       r.department_id AS department_id,
+                       r.status        AS status
+                FROM   dual
+            ) src ON (tgt.employee_id = src.employee_id)
+            WHEN MATCHED THEN
+                UPDATE SET
+                    tgt.first_name     = src.first_name,
+                    tgt.last_name      = src.last_name,
+                    tgt.email          = src.email,
+                    tgt.phone_number   = src.phone_number,
+                    tgt.salary         = src.salary,
+                    tgt.commission_pct = src.commission_pct,
+                    tgt.department_id  = src.department_id,
+                    tgt.status         = src.status,
+                    tgt.updated_at     = SYSDATE
+            WHEN NOT MATCHED THEN
+                INSERT (
+                    employee_id, first_name, last_name, email,
+                    phone_number, hire_date, job_id, salary,
+                    commission_pct, manager_id, department_id, status
+                ) VALUES (
+                    src.employee_id, src.first_name, src.last_name, src.email,
+                    src.phone_number, src.hire_date, src.job_id, src.salary,
+                    src.commission_pct, src.manager_id, src.department_id, src.status
+                );
+
+            v_inserted := v_inserted + SQL%ROWCOUNT;
+
+        EXCEPTION
+            WHEN OTHERS THEN
+                v_error_msg := SQLERRM;
+                v_skipped   := v_skipped + 1;
+                DBMS_OUTPUT.PUT_LINE('Skipped employee_id=' || r.employee_id || ' | Error: ' || v_error_msg);
+        END;
+    END LOOP;
+
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Records Processed : ' || v_inserted);
+    DBMS_OUTPUT.PUT_LINE('Records Skipped   : ' || v_skipped);
+    DBMS_OUTPUT.PUT_LINE('=== XDF: EMPLOYEE DATA LOAD COMPLETED ===');
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('FATAL ERROR in xdf_load_employees: ' || SQLERRM);
+        RAISE;
+END xdf_load_employees;
+/
+
+
+-- ============================================================
+-- SECTION 3: DATA EXPORT PROCEDURES (XDF OUT)
+-- ============================================================
+
+CREATE OR REPLACE DIRECTORY hr_export_dir AS '/oracle/data/hr/output';
+
+CREATE OR REPLACE PROCEDURE xdf_export_employees (
+    p_dept_id   IN NUMBER DEFAULT NULL,
+    p_file_name IN VARCHAR2 DEFAULT 'employees_export.csv'
+) AS
+    v_file    UTL_FILE.FILE_TYPE;
+    v_line    VARCHAR2(2000);
+    v_count   NUMBER := 0;
+BEGIN
+    v_file := UTL_FILE.FOPEN('HR_EXPORT_DIR', p_file_name, 'W', 32767);
+
+    -- Write header
+    UTL_FILE.PUT_LINE(v_file,
+        'EMPLOYEE_ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE_NUMBER,' ||
+        'HIRE_DATE,JOB_ID,SALARY,COMMISSION_PCT,DEPARTMENT_ID,STATUS'
+    );
+
+    -- Write data rows
+    FOR r IN (
+        SELECT  e.employee_id,
+                e.first_name,
+                e.last_name,
+                e.email,
+                e.phone_number,
+                TO_CHAR(e.hire_date, 'YYYY-MM-DD') AS hire_date,
+                e.job_id,
+                e.salary,
+                NVL(e.commission_pct, 0)            AS commission_pct,
+                e.department_id,
+                e.status
+        FROM    employees e
+        WHERE   (p_dept_id IS NULL OR e.department_id = p_dept_id)
+        ORDER   BY e.employee_id
+    ) LOOP
+        v_line :=
+            r.employee_id     || ',' ||
+            r.first_name      || ',' ||
+            r.last_name       || ',' ||
+            r.email           || ',' ||
+            r.phone_number    || ',' ||
+            r.hire_date       || ',' ||
+            r.job_id          || ',' ||
+            r.salary          || ',' ||
+            r.commission_pct  || ',' ||
+            r.department_id   || ',' ||
+            r.status;
+
+        UTL_FILE.PUT_LINE(v_file, v_line);
+        v_count := v_count + 1;
+    END LOOP;
+
+    UTL_FILE.FCLOSE(v_file);
+    DBMS_OUTPUT.PUT_LINE('Export completed. Rows written: ' || v_count);
+    DBMS_OUTPUT.PUT_LINE('File: ' || p_file_name);
+
+EXCEPTION
+    WHEN UTL_FILE.INVALID_PATH THEN
+        DBMS_OUTPUT.PUT_LINE('ERROR: Invalid export directory path.');
+    WHEN OTHERS THEN
+        IF UTL_FILE.IS_OPEN(v_file) THEN
+            UTL_FILE.FCLOSE(v_file);
+        END IF;
+        DBMS_OUTPUT.PUT_LINE('Export failed: ' || SQLERRM);
+        RAISE;
+END xdf_export_employees;
+/
+
+
+-- ============================================================
+-- SECTION 4: EXCHANGE FORMAT VALIDATION
+-- ============================================================
+
+CREATE OR REPLACE PROCEDURE xdf_validate_load AS
+    v_invalid_count   NUMBER := 0;
+    v_total_count     NUMBER := 0;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('=== XDF VALIDATION REPORT ===');
+
+    -- Total rows in external table
+    SELECT COUNT(*) INTO v_total_count FROM ext_employees_load;
+    DBMS_OUTPUT.PUT_LINE('Total rows in source file : ' || v_total_count);
+
+    -- Missing last name
+    SELECT COUNT(*) INTO v_invalid_count
+    FROM   ext_employees_load
+    WHERE  last_name IS NULL;
+    DBMS_OUTPUT.PUT_LINE('Missing last_name         : ' || v_invalid_count);
+
+    -- Missing email
+    SELECT COUNT(*) INTO v_invalid_count
+    FROM   ext_employees_load
+    WHERE  email IS NULL;
+    DBMS_OUTPUT.PUT_LINE('Missing email             : ' || v_invalid_count);
+
+    -- Salary out of range
+    SELECT COUNT(*) INTO v_invalid_count
+    FROM   ext_employees_load
+    WHERE  salary NOT BETWEEN 1000 AND 50000;
+    DBMS_OUTPUT.PUT_LINE('Salary out of range       : ' || v_invalid_count);
+
+    -- Invalid job_id
+    SELECT COUNT(*) INTO v_invalid_count
+    FROM   ext_employees_load el
+    WHERE  NOT EXISTS (
+               SELECT 1 FROM jobs j WHERE j.job_id = el.job_id
+           );
+    DBMS_OUTPUT.PUT_LINE('Invalid job_id            : ' || v_invalid_count);
+
+    -- Invalid department_id
+    SELECT COUNT(*) INTO v_invalid_count
+    FROM   ext_employees_load el
+    WHERE  NOT EXISTS (
+               SELECT 1 FROM departments d WHERE d.department_id = el.department_id
+           );
+    DBMS_OUTPUT.PUT_LINE('Invalid department_id     : ' || v_invalid_count);
+
+    DBMS_OUTPUT.PUT_LINE('=== VALIDATION COMPLETE ===');
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Validation error: ' || SQLERRM);
+END xdf_validate_load;
+/
+
+
+-- ============================================================
+-- SECTION 5: EXECUTE FULL XDF PIPELINE
+-- ============================================================
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('>>> Starting XDF Data Exchange Pipeline...');
+
+    -- Step 1: Validate incoming data
+    xdf_validate_load;
+
+    -- Step 2: Load employees
+    xdf_load_employees;
+
+    -- Step 3: Export processed data
+    xdf_export_employees(p_file_name => 'employees_processed.csv');
+
+    DBMS_OUTPUT.PUT_LINE('>>> XDF Pipeline Completed Successfully.');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('>>> XDF Pipeline FAILED: ' || SQLERRM);
+END;
+/
+
+
+-- ============================================================
+-- END OF XDF FILE
+-- ============================================================

@@ -1,0 +1,254 @@
+-- ============================================================
+-- FILE        : hr_schema_setup.dbf
+-- TYPE        : Database Definition File
+-- DESCRIPTION : HR Schema Table Definitions and Constraints
+-- ============================================================
+
+-- ============================================================
+-- DROP EXISTING TABLES (in order to avoid FK violations)
+-- ============================================================
+
+DROP TABLE payroll_ledger       CASCADE CONSTRAINTS PURGE;
+DROP TABLE payroll_audit_log    CASCADE CONSTRAINTS PURGE;
+DROP TABLE audit_logs           CASCADE CONSTRAINTS PURGE;
+DROP TABLE terminated_employees CASCADE CONSTRAINTS PURGE;
+DROP TABLE job_history          CASCADE CONSTRAINTS PURGE;
+DROP TABLE employees            CASCADE CONSTRAINTS PURGE;
+DROP TABLE departments          CASCADE CONSTRAINTS PURGE;
+DROP TABLE locations            CASCADE CONSTRAINTS PURGE;
+DROP TABLE countries            CASCADE CONSTRAINTS PURGE;
+DROP TABLE regions              CASCADE CONSTRAINTS PURGE;
+DROP TABLE jobs                 CASCADE CONSTRAINTS PURGE;
+DROP TABLE job_grades           CASCADE CONSTRAINTS PURGE;
+DROP TABLE salary_bands         CASCADE CONSTRAINTS PURGE;
+DROP TABLE system_config        CASCADE CONSTRAINTS PURGE;
+
+
+-- ============================================================
+-- CREATE SEQUENCES
+-- ============================================================
+
+CREATE SEQUENCE emp_seq  START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE dept_seq START WITH 100  INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE loc_seq  START WITH 500  INCREMENT BY 1 NOCACHE NOCYCLE;
+
+
+-- ============================================================
+-- TABLE: REGIONS
+-- ============================================================
+
+CREATE TABLE regions (
+    region_id     NUMBER(4)     CONSTRAINT regions_pk PRIMARY KEY,
+    region_name   VARCHAR2(50)  NOT NULL
+);
+
+
+-- ============================================================
+-- TABLE: COUNTRIES
+-- ============================================================
+
+CREATE TABLE countries (
+    country_id    CHAR(2)       CONSTRAINT countries_pk PRIMARY KEY,
+    country_name  VARCHAR2(60)  NOT NULL,
+    region_id     NUMBER(4)     CONSTRAINT countries_region_fk
+                                    REFERENCES regions(region_id)
+);
+
+
+-- ============================================================
+-- TABLE: LOCATIONS
+-- ============================================================
+
+CREATE TABLE locations (
+    location_id     NUMBER(4)    DEFAULT loc_seq.NEXTVAL
+                                 CONSTRAINT locations_pk PRIMARY KEY,
+    street_address  VARCHAR2(40),
+    postal_code     VARCHAR2(12),
+    city            VARCHAR2(30) NOT NULL,
+    state_province  VARCHAR2(25),
+    country_id      CHAR(2)      CONSTRAINT locations_country_fk
+                                     REFERENCES countries(country_id)
+);
+
+
+-- ============================================================
+-- TABLE: DEPARTMENTS
+-- ============================================================
+
+CREATE TABLE departments (
+    department_id    NUMBER(4)    DEFAULT dept_seq.NEXTVAL
+                                  CONSTRAINT departments_pk PRIMARY KEY,
+    department_name  VARCHAR2(50) NOT NULL,
+    manager_id       NUMBER(6),
+    location_id      NUMBER(4)   CONSTRAINT departments_location_fk
+                                     REFERENCES locations(location_id)
+);
+
+
+-- ============================================================
+-- TABLE: JOBS
+-- ============================================================
+
+CREATE TABLE jobs (
+    job_id      VARCHAR2(10)  CONSTRAINT jobs_pk PRIMARY KEY,
+    job_title   VARCHAR2(50)  NOT NULL,
+    min_salary  NUMBER(8, 2),
+    max_salary  NUMBER(8, 2)
+);
+
+
+-- ============================================================
+-- TABLE: JOB_GRADES
+-- ============================================================
+
+CREATE TABLE job_grades (
+    grade_level  VARCHAR2(3),
+    lowest_sal   NUMBER(8, 2),
+    highest_sal  NUMBER(8, 2)
+);
+
+
+-- ============================================================
+-- TABLE: SALARY_BANDS
+-- ============================================================
+
+CREATE TABLE salary_bands (
+    band_id      NUMBER(4)    CONSTRAINT salary_bands_pk PRIMARY KEY,
+    band_name    VARCHAR2(30) NOT NULL,
+    min_salary   NUMBER(8,2)  NOT NULL,
+    max_salary   NUMBER(8,2)  NOT NULL,
+    description  VARCHAR2(200)
+);
+
+
+-- ============================================================
+-- TABLE: EMPLOYEES
+-- ============================================================
+
+CREATE TABLE employees (
+    employee_id     NUMBER(6)     DEFAULT emp_seq.NEXTVAL
+                                  CONSTRAINT employees_pk PRIMARY KEY,
+    first_name      VARCHAR2(30),
+    last_name       VARCHAR2(30)  NOT NULL,
+    email           VARCHAR2(60)  NOT NULL
+                                  CONSTRAINT employees_email_uq UNIQUE,
+    phone_number    VARCHAR2(20),
+    hire_date       DATE          NOT NULL,
+    job_id          VARCHAR2(10)  CONSTRAINT employees_job_fk
+                                      REFERENCES jobs(job_id),
+    salary          NUMBER(8, 2),
+    commission_pct  NUMBER(2, 2)  DEFAULT 0,
+    manager_id      NUMBER(6)     CONSTRAINT employees_manager_fk
+                                      REFERENCES employees(employee_id),
+    department_id   NUMBER(4)     CONSTRAINT employees_dept_fk
+                                      REFERENCES departments(department_id),
+    status          VARCHAR2(20)  DEFAULT 'ACTIVE',
+    updated_at      DATE,
+    CONSTRAINT employees_salary_chk CHECK (salary > 0)
+);
+
+
+-- ============================================================
+-- TABLE: JOB_HISTORY
+-- ============================================================
+
+CREATE TABLE job_history (
+    employee_id    NUMBER(6)  NOT NULL,
+    start_date     DATE       NOT NULL,
+    end_date       DATE       NOT NULL,
+    job_id         VARCHAR2(10),
+    department_id  NUMBER(4),
+    CONSTRAINT job_history_pk PRIMARY KEY (employee_id, start_date),
+    CONSTRAINT job_history_emp_fk  FOREIGN KEY (employee_id)
+        REFERENCES employees(employee_id),
+    CONSTRAINT job_history_date_chk CHECK (end_date > start_date)
+);
+
+
+-- ============================================================
+-- TABLE: TERMINATED_EMPLOYEES
+-- ============================================================
+
+CREATE TABLE terminated_employees (
+    employee_id       NUMBER(6)    NOT NULL,
+    termination_date  DATE         NOT NULL,
+    reason            VARCHAR2(200),
+    CONSTRAINT term_emp_pk PRIMARY KEY (employee_id)
+);
+
+
+-- ============================================================
+-- TABLE: AUDIT_LOGS
+-- ============================================================
+
+CREATE TABLE audit_logs (
+    log_id       NUMBER         GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    action_type  VARCHAR2(50)   NOT NULL,
+    table_name   VARCHAR2(50),
+    record_id    NUMBER,
+    old_value    VARCHAR2(500),
+    new_value    VARCHAR2(500),
+    changed_by   VARCHAR2(100),
+    changed_at   DATE           DEFAULT SYSDATE
+);
+
+
+-- ============================================================
+-- TABLE: PAYROLL_LEDGER
+-- ============================================================
+
+CREATE TABLE payroll_ledger (
+    ledger_id     NUMBER        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    employee_id   NUMBER(6)     NOT NULL,
+    pay_month     NUMBER(2)     NOT NULL,
+    pay_year      NUMBER(4)     NOT NULL,
+    gross_pay     NUMBER(10,2)  NOT NULL,
+    deductions    NUMBER(10,2)  DEFAULT 0,
+    net_pay       NUMBER(10,2)  NOT NULL,
+    processed_at  DATE          DEFAULT SYSDATE,
+    CONSTRAINT payroll_ledger_uq UNIQUE (employee_id, pay_month, pay_year)
+);
+
+
+-- ============================================================
+-- TABLE: PAYROLL_AUDIT_LOG
+-- ============================================================
+
+CREATE TABLE payroll_audit_log (
+    audit_id   NUMBER       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    action     VARCHAR2(50),
+    pay_month  NUMBER(2),
+    pay_year   NUMBER(4),
+    remarks    VARCHAR2(500),
+    logged_at  DATE DEFAULT SYSDATE
+);
+
+
+-- ============================================================
+-- TABLE: SYSTEM_CONFIG
+-- ============================================================
+
+CREATE TABLE system_config (
+    config_key    VARCHAR2(100)  CONSTRAINT system_config_pk PRIMARY KEY,
+    config_value  VARCHAR2(500)  NOT NULL,
+    description   VARCHAR2(500),
+    updated_at    DATE           DEFAULT SYSDATE
+);
+
+
+-- ============================================================
+-- CREATE INDEXES
+-- ============================================================
+
+CREATE INDEX idx_emp_dept    ON employees(department_id);
+CREATE INDEX idx_emp_job     ON employees(job_id);
+CREATE INDEX idx_emp_manager ON employees(manager_id);
+CREATE INDEX idx_emp_status  ON employees(status);
+CREATE INDEX idx_emp_hire    ON employees(hire_date);
+CREATE INDEX idx_payroll_emp ON payroll_ledger(employee_id);
+CREATE INDEX idx_audit_date  ON audit_logs(changed_at);
+
+
+-- ============================================================
+-- END OF DATABASE DEFINITION FILE
+-- ============================================================
