@@ -1,0 +1,352 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<page xmlns:jrad="http://xmlns.oracle.com/jrad" xmlns:oa="http://xmlns.oracle.com/oa" xmlns:ui="http://xmlns.oracle.com/uix/ui" version="10.1.3_" xml:lang="en-US" xmlns:user="http://xmlns.oracle.com/jrad/user" xmlns="http://xmlns.oracle.com/jrad" file-version="$Header$">
+   <content>
+      <oa:pageLayout id="region1" windowTitle="Credit Memo" title="Credit Memo" amDefName="oracle.apps.sfc.clm.PaymentForm.server.CLMPaymentAM" controllerClass="oracle.apps.sfc.clm.PaymentForm.webui.CLMCreditMemoCO">
+         <ui:corporateBranding>
+            <oa:image id="corporateBrandingImage" source="/OA_MEDIA/FNDSSCORP.gif"/>
+         </ui:corporateBranding>
+         <ui:contents>
+            <oa:advancedTable id="CreditMemoRN" viewName="CLMPaymentInvoiceEOVO1" rendered="true" width="100%">
+               <ui:contents>
+                  <oa:column id="BWReqNoCol" columnDataFormat="numberFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader123" prompt="BW Request No"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item11715" viewAttr="BandWidhReqNo"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="ClmIdCol">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader1231" prompt="CLM ID"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item117151" viewAttr="ClmId"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="clmActivity">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader11111" prompt="Activity"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item11111" viewAttr="Activity"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="supCol">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader12311" prompt="Supplier"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item1171511" viewAttr="Supplier"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="supSiteCol">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader12312" prompt="Supplier Site"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item1171512" viewAttr="SupplierSite"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="InvoiceTypeCol">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader1111" prompt="Invoice Type"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item1111" viewAttr="InvoiceType"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="PoNumberCol1">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader1121" prompt="Po Number"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item1121" viewAttr="PoNumber"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="poAmtCol" columnDataFormat="numberFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader11211" prompt="PO Amount"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item11211" viewAttr="PoAmount"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="balanceCNAmt" columnDataFormat="numberFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader1913" prompt="Credit Amount"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item1913" viewAttr="InvAmtRef" prompt="" dataType="NUMBER"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="InvNoCol">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader161" prompt="Invoice Number"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageTextInput id="item161" viewAttr="ClmInvoiceNumber" maximumLength="16"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="invDAteCol" columnDataFormat="textFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader1611" prompt="Invoice Date"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageTextInput id="item1611" viewAttr="InvoiceDate" dataType="DATE"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="CMAmountCol" columnDataFormat="numberFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader191" prompt="Invoice Amount"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageTextInput id="item191" viewAttr="InvoiceAmount" prompt="" dataType="NUMBER">
+                           <ui:primaryClientAction>
+                              <ui:fireAction event="BalanceAmountEvent"/>
+                           </ui:primaryClientAction>
+                        </oa:messageTextInput>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="balCNAmount" columnDataFormat="numberFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader1911" prompt="Balance Credit Amount"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item1911" viewAttr="BalAmt" prompt="" dataType="NUMBER"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="invDAteFrom" columnDataFormat="textFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader16111" prompt="Invoice From Period Date"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageTextInput id="item16111" viewAttr="InvPeriodFromDate" dataType="DATE"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="invDAteTo" columnDataFormat="textFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader16112" prompt="Invoice To period Date"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageTextInput id="item16112" viewAttr="InvPeriodToDate" dataType="DATE"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="closeBalCheck" columnDataFormat="iconButtonFormat">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader1912" prompt="Close Balance Amount"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageCheckBox id="item1912" viewAttr="Attribute4" prompt="" dataType="VARCHAR2" checkedValue="Y" unCheckedValue="N"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="remarks">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader16113" prompt="Remarks"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageTextInput id="item16113" viewAttr="Attribute15" maximumLength="250"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="surrDate">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader161121" prompt="Surrendered Date"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item161121" viewAttr="SurrenderedDate" dataType="DATE"/>
+                     </ui:contents>
+                  </oa:column>
+                  <oa:column id="lastPaidDate" width="50">
+                     <ui:columnHeader>
+                        <oa:sortableHeader id="sortableHeader161121111" prompt="Last Paid Date"/>
+                     </ui:columnHeader>
+                     <ui:contents>
+                        <oa:messageStyledText id="item161121111" viewAttr="CnLastPaidDate" dataType="DATE"/>
+                     </ui:contents>
+                  </oa:column>
+               </ui:contents>
+               <ui:tableActions>
+                  <oa:flowLayout id="region3">
+                     <ui:contents>
+                        <oa:submitButton id="SaveBtn" text="Save" prompt="Save" serverUnvalidated="true" unvalidated="true" rendered="false"/>
+                     </ui:contents>
+                  </oa:flowLayout>
+               </ui:tableActions>
+            </oa:advancedTable>
+            <oa:header id="region9" text="Credit Invoice History">
+               <ui:contents>
+                  <oa:advancedTable id="CreditMemoRN1" viewName="CLMCreditInvHistVO" rendered="true" width="100%">
+                     <ui:contents>
+                        <oa:column id="BWReqNoCol1" columnDataFormat="numberFormat">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader12313" prompt="BW Request No"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item1171513" viewAttr="BandWidhReqNo"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="ClmIdCol1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader12314" prompt="CLM ID"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item1171514" viewAttr="ClmId"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="clmActivity1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader111111" prompt="Activity"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item111111" viewAttr="Activity"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="supCol1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader123111" prompt="Supplier"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item11715111" viewAttr="Supplier"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="supSiteCol1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader123121" prompt="Supplier Site"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item11715121" viewAttr="SupplierSite"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="InvoiceTypeCol1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader111112" prompt="Invoice Type"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item111112" viewAttr="InvoiceType"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="PoNumberCol11">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader11212" prompt="Po Number"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item11212" viewAttr="PoNumber"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="poAmtCol1" columnDataFormat="numberFormat">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader112111" prompt="PO Amount"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item112111" viewAttr="PoAmount"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="balanceCNAmt1" columnDataFormat="numberFormat">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader19131" prompt="Credit Amount"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item19131" viewAttr="InvAmtRef" prompt="" dataType="NUMBER"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="InvNoCol1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader1611212" prompt="Invoice Number"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item1611212" viewAttr="ClmInvoiceNumber" maximumLength="16"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="CMAmountCol1" columnDataFormat="numberFormat">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader19132" prompt="Invoice Amount"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item19132" viewAttr="InvoiceAmount" prompt="" dataType="NUMBER"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="invDAteFrom1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader161111" prompt="Invoice From Period Date"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item161111" viewAttr="InvPeriodFromDate" dataType="DATE"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="invDAteTo1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader1611213" prompt="Invoice To period Date"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item1611213" viewAttr="InvPeriodToDate" dataType="DATE"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="balCNAmount1" columnDataFormat="numberFormat">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader19111" prompt="Balance Credit Amount"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item19111" viewAttr="BalAmt" prompt="" dataType="NUMBER"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="closeBalCheck1" columnDataFormat="iconButtonFormat">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader19121" prompt="Close Balance Amount"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageCheckBox id="item19121" viewAttr="Attribute4" prompt="" dataType="VARCHAR2" checkedValue="Y" unCheckedValue="N" readOnly="true"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="invDAteCol1" columnDataFormat="numberFormat">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader1611214" prompt="Invoice Date"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item1611214" viewAttr="InvoiceDate" dataType="DATE"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="InvWfstatus">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader16112121" prompt="Invoice Status"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item16112121" viewAttr="InvoiceWfStatus" maximumLength="16"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="remarks1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader161131" prompt="Remarks"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item161131" viewAttr="Attribute15" maximumLength="250"/>
+                           </ui:contents>
+                        </oa:column>
+                        <oa:column id="surrDate1">
+                           <ui:columnHeader>
+                              <oa:sortableHeader id="sortableHeader1611215" prompt="Surrendered Date"/>
+                           </ui:columnHeader>
+                           <ui:contents>
+                              <oa:messageStyledText id="item1611215" viewAttr="SurrenderedDate" dataType="DATE"/>
+                           </ui:contents>
+                        </oa:column>
+                     </ui:contents>
+                     <ui:tableActions>
+                        <oa:flowLayout id="region31">
+                           <ui:contents>
+                              <oa:submitButton id="SaveBtn1" text="Save" prompt="Save" serverUnvalidated="true" unvalidated="true" rendered="false"/>
+                           </ui:contents>
+                        </oa:flowLayout>
+                     </ui:tableActions>
+                  </oa:advancedTable>
+               </ui:contents>
+            </oa:header>
+            <oa:pageButtonBar id="region8">
+               <ui:contents>
+                  <oa:submitButton id="SubmitBtn" text="Submit" prompt="Submit"/>
+                  <oa:submitButton id="CancelBtn" text="Go Back" prompt="Go Back"/>
+               </ui:contents>
+            </oa:pageButtonBar>
+         </ui:contents>
+      </oa:pageLayout>
+   </content>
+</page>

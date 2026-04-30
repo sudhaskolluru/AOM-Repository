@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataTemplate name="XXPOWI_LOT_GNLG"  defaultPackage="XXPI_Lot_Gnlg_PKG" version="1.0">
+    <properties>
+        <property name="xml_tag_case" value="upper"/>
+    </properties>
+    <parameters>
+	     <parameter name="P_PRODUCT_FAMILY" 		dataType="character" include_in_output="true"/>	
+	     <parameter name="P_ITEM_NAME" 		dataType="character" include_in_output="true"/>	
+		<parameter name="P_ORG_CODE" 		dataType="character" include_in_output="true"/>	
+    </parameters>    
+<dataQuery>                    
+  <sqlStatement name="Q_Lot_GNLG">
+  <![CDATA[ 
+		select co_cd,
+       fg_item_object_id,
+       assy_object_id,
+       fg_inv_org_code,
+	   fg_pco_org,
+	   fg_inv_org_site,
+       fg_item,
+       fg_subinv_code, 
+     Product_Family,
+       fg_moq,
+       fg_lot, 
+       assy_item,
+	   assy_inv_org_site,
+       max(decode(seq, 1, die_item, null)) item1,
+       max(decode(seq, 1, die_lot, null)) lot_number1,
+       max(decode(seq, 2, die_item, null)) item2,
+       max(decode(seq, 2, die_lot, null)) lot_number2,
+       max(decode(seq, 3, die_item, null)) item3,
+       max(decode(seq, 3, die_lot, null)) lot_number3,
+       max(decode(seq, 4, die_item, null)) item4,
+       max(decode(seq, 4, die_lot, null)) lot_number4,
+       max(decode(seq, 5, die_item, null)) item5,
+       max(decode(seq, 5, die_lot, null)) lot_number5
+  from (SELECT co_cd,
+               fg_item_object_id,
+               assy_object_id,
+               fg_inv_org_code,
+			   fg_pco_org,
+			   fg_inv_org_site,
+               fg_item,
+			   assy_inv_org_site,
+               fg_subinv_code, 
+         Product_Family,
+               fg_moq,
+               fg_lot, 
+               assy_item,
+               die_item,
+               die_lot,
+               row_number() OVER(PARTITION BY assy_object_id,
+               co_cd,
+               fg_item_object_id, 
+               fg_inv_org_code,
+			   fg_pco_org,
+               fg_item,
+               fg_subinv_code,
+               fg_moq,
+               fg_lot,
+               assy_item order by assy_object_id) seq
+          from (SELECT co_cd,
+                       fg_item_object_id,
+                       assy_object_id,
+                       fg_inv_org_code,
+					   fg_pco_org,
+					   fg_inv_org_site,
+                       fg_item,
+                       fg_subinv_code,
+					   Product_Family,
+                       fg_moq,
+                       fg_lot, 
+                       assy_item,
+					   assy_inv_org_site,
+                       die_item,
+                       die_lot
+                  FROM XXPI_LOT_GNLG_FAB mog
+				      order by assy_object_id))
+ where seq <= 5
+ group by co_cd,
+          fg_item_object_id,
+          assy_object_id,
+          fg_inv_org_code,
+		  fg_pco_org,
+		  fg_inv_org_site,
+          fg_item,
+          fg_subinv_code,
+		  Product_Family,
+          fg_moq,
+          fg_lot, 
+          assy_item,
+		  assy_inv_org_site
+]]> 
+  </sqlStatement>
+ </dataQuery>
+<dataTrigger name="beforeReport" source="XXPI_Lot_Gnlg_PKG.beforereport1(:P_PRODUCT_FAMILY,:P_ITEM_NAME,:P_ORG_CODE)"/>
+<dataStructure>
+<group name="G_FG_Inv_Item_id" source="Q_Lot_GNLG">
+<element name="co_cd" value="co_cd"/> 
+<element name="ASSY_OBJECT_ID" value="ASSY_OBJECT_ID" /> 
+   <element name="FG_INV_ORG_CODE" value="FG_INV_ORG_CODE" /> 
+   <element name="FG_PCO_ORG" value="FG_PCO_ORG" />
+   <element name="FG_INV_ORG_SITE" value="FG_INV_ORG_SITE" /> 
+   <element name="fg_item_object_id" value="fg_item_object_id" /> 
+   <element name="FG_ITEM" value="FG_ITEM" /> 
+   <element name="Product_Family" value="Product_Family" />    
+   <element name="fg_subinv_code" value="fg_subinv_code" />    
+   <element name="FG_MOQ" value="FG_MOQ" />  
+   <element name="FG_LOT" value="FG_LOT" /> 
+   <element name="ASSY_OBJECT_ID" value="ASSY_OBJECT_ID" />
+	<element name="ASSY_ITEM" value="ASSY_ITEM" /> 
+	<element name="ASSY_INV_ORG_SITE" value="ASSY_INV_ORG_SITE" /> 
+	<element name="ITEM1" value="ITEM1" /> 
+	<element name="LOT_NUMBER1" value="LOT_NUMBER1" /> 
+	<element name="ITEM2" value="ITEM2" /> 
+	<element name="LOT_NUMBER2" value="LOT_NUMBER2" /> 
+	<element name="ITEM3" value="ITEM3" /> 
+	<element name="LOT_NUMBER3" value="LOT_NUMBER3" /> 
+	<element name="ITEM4" value="ITEM4" /> 
+	<element name="LOT_NUMBER4" value="LOT_NUMBER4" /> 
+	<element name="ITEM5" value="ITEM5" /> 
+	<element name="LOT_NUMBER5" value="LOT_NUMBER5" />  
+</group> 
+  </dataStructure>
+  </dataTemplate>
