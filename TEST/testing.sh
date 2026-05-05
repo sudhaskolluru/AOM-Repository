@@ -1,0 +1,1 @@
+sh $TRINITI_HOME/Tri2/Temp/test.sh $1 $2
