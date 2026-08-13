@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page xmlns:jrad="http://xmlns.oracle.com/jrad"
+      xmlns:oa="http://xmlns.oracle.com/oa"
+      xmlns:ui="http://xmlns.oracle.com/uix/ui"
+      version="10.1.3_"
+      xml:lang="en-US"
+      xmlns:user="http://xmlns.oracle.com/jrad/user"
+      xmlns="http://xmlns.oracle.com/jrad"
+      file-version="$Header$">
+  <content>
+    <oa:pageLayout id="region1"
+        windowTitle="Demo Page"
+        title="Demo Page"
+        amDefName="oracle.apps.custom.xxdemo.server.DemoAM"
+        controllerClass="oracle.apps.custom.xxdemo.webui.DemoCO">
+      <ui:contents>
+        <oa:pageButtonBar id="buttons">
+          <ui:contents>
+            <oa:submitButton id="ApplyBtn" prompt="Apply"/>
+          </ui:contents>
+        </oa:pageButtonBar>
+      </ui:contents>
+    </oa:pageLayout>
+  </content>
+</page>
