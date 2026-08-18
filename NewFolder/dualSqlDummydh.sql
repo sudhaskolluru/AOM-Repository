@@ -1,0 +1,6 @@
+-- Old Version
+
+SELECT
+    'Old Version AS VERSION_NAME,
+    SYSDATE AS CREATED_DATE
+FROM DUAL;
