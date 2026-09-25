@@ -1,0 +1,5 @@
+/* DUMMY TEST FILE - NOT A VALID ORACLE FORMS .FMB FILE */
+FORM_NAME = TEST_DUMMY_FORM
+MODULE_TYPE = FORM
+PURPOSE = Migration validation testing
+This file is intentionally invalid and should NOT compile as an Oracle Form.

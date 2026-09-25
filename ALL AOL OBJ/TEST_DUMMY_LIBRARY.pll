@@ -1,0 +1,5 @@
+/* DUMMY TEST FILE - NOT A VALID ORACLE FORMS .PLL FILE */
+LIBRARY_NAME = TEST_DUMMY_LIBRARY
+MODULE_TYPE = LIBRARY
+PURPOSE = Migration validation testing
+This file is intentionally invalid and should NOT compile as an Oracle Form Library.
