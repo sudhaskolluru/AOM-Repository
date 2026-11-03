@@ -19,7 +19,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2026.04.07'
-,p_release=>'26.2.0'
+,p_release=>'26.2.1'
 ,p_default_workspace_id=>51226047234853060085
 ,p_default_application_id=>824
 ,p_default_id_offset=>0
@@ -61,7 +61,7 @@ prompt APPLICATION 824 - Medical Shop Inventories
 --       Reports:
 --       E-Mail:
 --     Supporting Objects:  Included
---   Version:         26.2.0
+--   Version:         26.2.1
 --   Instance ID:     63113759365424
 --
 
